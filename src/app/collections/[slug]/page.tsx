@@ -1,19 +1,29 @@
 import { notFound } from 'next/navigation'
-import { COLLECTIONS } from '@/lib/constants'
 import type { Metadata } from 'next'
+import { sanityFetch } from '../../../../sanity/lib/client'
+import { allCollectionsQuery, collectionBySlugQuery } from '../../../../sanity/lib/queries'
 import { CollectionDetail } from './CollectionDetail'
+import type { Collection } from '@/types'
 
 interface Props {
   params: Promise<{ slug: string }>
 }
 
 export async function generateStaticParams() {
-  return COLLECTIONS.map((c) => ({ slug: c.slug }))
+  const collections = await sanityFetch<Collection[]>({
+    query: allCollectionsQuery,
+    tags: ['collection'],
+  })
+  return collections.map((c) => ({ slug: c.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const collection = COLLECTIONS.find((c) => c.slug === slug)
+  const collection = await sanityFetch<Collection | null>({
+    query: collectionBySlugQuery,
+    params: { slug },
+    tags: ['collection'],
+  })
   if (!collection) return {}
   return {
     title: `${collection.title} — Vilasa Curators`,
@@ -23,7 +33,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CollectionPage({ params }: Props) {
   const { slug } = await params
-  const collection = COLLECTIONS.find((c) => c.slug === slug)
+  const collection = await sanityFetch<Collection | null>({
+    query: collectionBySlugQuery,
+    params: { slug },
+    tags: ['collection'],
+  })
   if (!collection) notFound()
 
   return <CollectionDetail collection={collection} />

@@ -5,8 +5,14 @@ import { motion, useInView } from 'framer-motion'
 import { staggerContainer, fadeUp, ease } from '@/lib/animations'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { CTALink } from '@/components/ui/CTALink'
+import type { HomePage, SiteSettings } from '@/types'
 
-export function FinalCTA() {
+interface FinalCTAProps {
+  homePage?: HomePage | null
+  siteSettings?: SiteSettings | null
+}
+
+export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
   const ref = useRef<HTMLElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-10%' })
 
@@ -31,12 +37,10 @@ export function FinalCTA() {
             variants={fadeUp}
             className="font-heading text-espresso text-5xl md:text-7xl lg:text-8xl font-light leading-[0.9] mb-12"
           >
-            More than objects.
+            {homePage?.finalCtaHeading || 'More than objects.'}
             <br />
             <em className="text-bronze">
-              We compose
-              <br />
-              atmospheres.
+              {homePage?.finalCtaHeadingItalic || 'We compose atmospheres.'}
             </em>
           </motion.h2>
 
@@ -44,8 +48,7 @@ export function FinalCTA() {
             variants={fadeUp}
             className="text-charcoal/60 text-base md:text-lg font-light leading-relaxed max-w-md mb-12"
           >
-            If you have a space that requires the world's most considered objects,
-            we would like to hear from you.
+            {homePage?.finalCtaBody || "If you have a space that requires the world's most considered objects, we would like to hear from you."}
           </motion.p>
 
           <motion.div variants={fadeUp} className="flex flex-wrap gap-8">
@@ -74,13 +77,13 @@ export function FinalCTA() {
 
           <div className="space-y-2">
             <a
-              href="mailto:hello@vilasacurators.com"
+              href={`mailto:${siteSettings?.email || 'hello@vilasacurators.com'}`}
               className="cta-underline text-charcoal/70 text-sm font-light block hover:text-espresso transition-colors duration-300"
             >
-              hello@vilasacurators.com
+              {siteSettings?.email || 'hello@vilasacurators.com'}
             </a>
             <a
-              href="https://wa.me/91XXXXXXXXXX"
+              href={`https://wa.me/${siteSettings?.whatsappNumber || '919999999999'}`}
               className="cta-underline text-charcoal/70 text-sm font-light block hover:text-espresso transition-colors duration-300"
             >
               WhatsApp Enquiry

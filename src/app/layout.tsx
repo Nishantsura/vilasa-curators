@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
 import { Cormorant_Garamond, Inter_Tight } from 'next/font/google'
 import './globals.css'
-import { Navigation } from '@/components/layout/Navigation'
-import { SmoothScrollProvider } from '@/components/layout/SmoothScrollProvider'
-import { AudioToggle } from '@/components/layout/AudioToggle'
+import { SiteChrome } from '@/components/layout/SiteChrome'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -38,11 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${cormorant.variable} ${interTight.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-ivory text-espresso">
-        <SmoothScrollProvider>
-          <Navigation />
-          <main>{children}</main>
-          <AudioToggle />
-        </SmoothScrollProvider>
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   )

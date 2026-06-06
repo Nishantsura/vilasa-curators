@@ -12,7 +12,14 @@ function WhatsAppIcon() {
   )
 }
 
-export function HeroSection() {
+import type { HomePage, SiteSettings } from '@/types'
+
+interface HeroSectionProps {
+  homePage?: HomePage | null
+  siteSettings?: SiteSettings | null
+}
+
+export function HeroSection({ homePage, siteSettings }: HeroSectionProps) {
   const ref = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.1])
@@ -78,13 +85,13 @@ export function HeroSection() {
               className="font-heading text-ivory leading-[1.0] mb-5"
               style={{ fontSize: 'clamp(38px, 5.8vw, 82px)' }}
             >
-              WE SOURCE THE WORLD.
+              {homePage?.heroHeadline || 'WE SOURCE THE WORLD.'}
               <br />
               <em
                 className="font-heading"
                 style={{ fontStyle: 'italic', fontWeight: 300, color: 'rgba(245,240,235,0.82)' }}
               >
-                FOR SPACES THAT FEEL INEVITABLE.
+                {homePage?.heroHeadlineItalic || 'FOR SPACES THAT FEEL INEVITABLE.'}
               </em>
             </h1>
 
@@ -92,19 +99,18 @@ export function HeroSection() {
               className="text-ivory/50 font-body font-light leading-relaxed mb-9"
               style={{ fontSize: 'clamp(13px, 1.15vw, 16px)', maxWidth: 440 }}
             >
-              From marble quarries in Italy to lacquer workshops in Vietnam —
-              every object chosen for the atmosphere it creates.
+              {homePage?.heroSubtext || 'From marble quarries in Italy to lacquer workshops in Vietnam — every object chosen for the atmosphere it creates.'}
             </p>
 
             <motion.a
-              href="/collections"
+              href={homePage?.heroCtaHref || '/collections'}
               className="inline-flex items-center gap-3 px-6 py-3.5 text-ivory font-body font-medium uppercase tracking-[0.2em] transition-opacity duration-300 hover:opacity-80"
               style={{ backgroundColor: '#4a5240', fontSize: 11 }}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.9, ease }}
             >
-              EXPLORE COLLECTIONS
+              {homePage?.heroCtaLabel || 'EXPLORE COLLECTIONS'}
               <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
                 <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -136,7 +142,7 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 1.1, ease }}
           >
             <a
-              href="https://wa.me/919999999999"
+              href={`https://wa.me/${siteSettings?.whatsappNumber || '919999999999'}`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Chat on WhatsApp"

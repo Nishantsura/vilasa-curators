@@ -7,24 +7,24 @@ import { ease } from '@/lib/animations'
 
 const CARDS = [
   {
-    heading: 'FIVE\nCONTINENTS.',
-    sub: 'Italy, Vietnam, Bali, China and Mexico — each destination chosen for what it does best.',
+    heading: 'THE SOURCING\nVOYAGE.',
+    sub: '',
     rotate: -7,
     x: -36,
     y: 28,
     zIndex: 1,
   },
   {
-    heading: 'SELECTED\nIN PERSON.',
-    sub: 'Every piece chosen at the source — in the workshop, the quarry, the atelier.',
+    heading: 'THE ARTISAN\nALLIANCE.',
+    sub: '',
     rotate: 1,
     x: 0,
     y: 0,
     zIndex: 2,
   },
   {
-    heading: 'BEYOND\nANY\nCATALOGUE.',
-    sub: 'Access to makers that no international buying guide has yet discovered.',
+    heading: 'WITHOUT\nREPETITION.',
+    sub: 'Access to private reserves and singular creations that no international buying guide has ever documented.',
     rotate: 8,
     x: 36,
     y: -22,
@@ -32,7 +32,9 @@ const CARDS = [
   },
 ]
 
-export function PhilosophySection() {
+import type { HomePage } from '@/types'
+
+export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) {
   // outerRef = tall wrapper that provides scroll distance; no GSAP pin touches the DOM
   const outerRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -122,7 +124,7 @@ export function PhilosophySection() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, ease }}
             >
-              Why Vilasa
+              Our Philosophy
             </motion.span>
 
             <motion.h2
@@ -132,13 +134,13 @@ export function PhilosophySection() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.85, delay: 0.1, ease }}
             >
-              SOURCING THE WORLD.
+              {homePage?.philosophyHeading || 'SOURCING THE WORLD.'}
               <br />
               <em
                 className="font-heading"
                 style={{ fontStyle: 'italic', fontWeight: 300, color: 'rgba(26,23,19,0.65)' }}
               >
-                IT STARTS HERE.
+                {homePage?.philosophyHeadingItalic || 'IT STARTS HERE.'}
               </em>
             </motion.h2>
 
@@ -149,9 +151,7 @@ export function PhilosophySection() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.85, delay: 0.22, ease }}
             >
-              At Vilasa Curators, every object we source is chosen in person — in the
-              workshops of Umbria, the lacquer ateliers of Hanoi, the stone yards of
-              Bali. We bring back what no catalogue can represent.
+              {homePage?.philosophyBody || 'At Vilasa Curators, every object we source is chosen in person — in the workshops of Umbria, the lacquer ateliers of Hanoi, the stone yards of Bali. We bring back what no catalogue can represent.'}
             </motion.p>
 
             <motion.div

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import type { Destination } from '@/types'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { staggerContainer, fadeUp, imageReveal, ease } from '@/lib/animations'
+import { sanityImageUrl } from '../../../../sanity/lib/image'
 
 export function DestinationDetail({ destination }: { destination: Destination }) {
   return (
@@ -12,13 +13,17 @@ export function DestinationDetail({ destination }: { destination: Destination })
       {/* Hero */}
       <section className="relative min-h-screen flex items-end bg-espresso overflow-hidden">
         <div className="absolute inset-0">
-          <Image
-            src={destination.imageUrl}
-            alt={destination.name}
-            fill
-            className="object-cover opacity-60"
-            priority
-          />
+          {destination.image?.asset && (
+            <Image
+              src={sanityImageUrl(destination.image, 1920)}
+              alt={destination.image.alt || destination.name}
+              fill
+              className="object-cover opacity-60"
+              priority
+              blurDataURL={destination.image.asset.metadata?.lqip}
+              placeholder={destination.image.asset.metadata?.lqip ? 'blur' : undefined}
+            />
+          )}
           <div
             className="absolute inset-0"
             style={{ background: 'linear-gradient(to top, rgba(26,23,19,0.85) 0%, transparent 50%)' }}

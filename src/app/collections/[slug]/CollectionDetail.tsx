@@ -6,8 +6,12 @@ import type { Collection } from '@/types'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { CTALink } from '@/components/ui/CTALink'
 import { staggerContainer, fadeUp, imageReveal, ease } from '@/lib/animations'
+import { sanityImageUrl } from '../../../../sanity/lib/image'
 
 export function CollectionDetail({ collection }: { collection: Collection }) {
+  const firstImage = collection.images?.[0]
+  const additionalImages = collection.images?.slice(1) ?? []
+
   return (
     <div className="bg-ivory min-h-screen">
       {/* Header */}
@@ -41,7 +45,7 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
           </CTALink>
         </motion.div>
 
-        {collection.images[0] && (
+        {firstImage?.asset && (
           <motion.div
             variants={imageReveal}
             initial="hidden"
@@ -50,37 +54,43 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
             className="relative aspect-[4/3] overflow-hidden"
           >
             <Image
-              src={collection.images[0]}
-              alt={collection.title}
+              src={sanityImageUrl(firstImage, 1200)}
+              alt={firstImage.alt || collection.title}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
+              blurDataURL={firstImage.asset.metadata?.lqip}
+              placeholder={firstImage.asset.metadata?.lqip ? 'blur' : undefined}
             />
           </motion.div>
         )}
       </section>
 
       {/* Additional images */}
-      {collection.images.length > 1 && (
+      {additionalImages.length > 0 && (
         <section className="px-8 md:px-16 pb-32 max-w-[1400px] mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {collection.images.slice(1).map((img, i) => (
-              <motion.div
-                key={i}
-                variants={imageReveal}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-5%' }}
-                className="relative aspect-[3/4] overflow-hidden"
-              >
-                <Image
-                  src={img}
-                  alt={`${collection.title} ${i + 2}`}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 50vw, 33vw"
-                />
-              </motion.div>
+            {additionalImages.map((img, i) => (
+              img?.asset && (
+                <motion.div
+                  key={img.asset._id}
+                  variants={imageReveal}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: '-5%' }}
+                  className="relative aspect-[3/4] overflow-hidden"
+                >
+                  <Image
+                    src={sanityImageUrl(img, 800)}
+                    alt={img.alt || `${collection.title} ${i + 2}`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    blurDataURL={img.asset.metadata?.lqip}
+                    placeholder={img.asset.metadata?.lqip ? 'blur' : undefined}
+                  />
+                </motion.div>
+              )
             ))}
           </div>
         </section>

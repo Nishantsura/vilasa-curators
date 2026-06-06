@@ -4,50 +4,35 @@ import { useRef, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { COLLECTIONS } from '@/lib/constants'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { ease } from '@/lib/animations'
 import type { Collection } from '@/types'
-
-// Unsplash placeholder images — swap with real photography when ready
-const PLACEHOLDER: Record<string, string> = {
-  'living-room':               'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
-  'dining':                    'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80',
-  'modular-kitchen':           'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80',
-  'bedrooms-wardrobes':        'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80',
-  'mattresses-pillow-filling': 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80',
-  'tiles-stones':              'https://images.unsplash.com/photo-1615971677499-5467cbab01b0?w=800&q=80',
-  'doors':                     'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=800&q=80',
-  'wall-panels':               'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80',
-  'fabric-selection':          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
-  'carpets':                   'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80',
-  'outdoor-furniture':         'https://images.unsplash.com/photo-1600210492493-0946911123ea?w=800&q=80',
-  'artifacts-statement-pieces':'https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?w=800&q=80',
-}
-
-// 12 collections → 3 columns of 4
-const COL_1 = COLLECTIONS.slice(0, 4)   // left  — counter-scroll (bottom → top reveal)
-const COL_2 = COLLECTIONS.slice(4, 8)   // mid   — normal scroll  (top → bottom reveal)
-const COL_3 = COLLECTIONS.slice(8, 12)  // right — counter-scroll (bottom → top reveal)
+import { sanityImageUrl } from '../../../sanity/lib/image'
 
 function CollectionCard({ collection }: { collection: Collection }) {
-  const imgSrc = PLACEHOLDER[collection.slug] ?? PLACEHOLDER['living-room']
+  const firstImage = collection.images?.[0]
+  const imgSrc = firstImage?.asset
+    ? sanityImageUrl(firstImage, 800)
+    : ''
 
   return (
     <Link href={`/collections/${collection.slug}`} className="group block w-[22vw]">
       {/* Portrait image */}
       <div
-        className="relative overflow-hidden"
+        className="relative overflow-hidden bg-beige/30"
         style={{ aspectRatio: '3 / 4', willChange: 'transform' }}
       >
-        <Image
-          src={imgSrc}
-          alt={collection.title}
-          fill
-          unoptimized
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
-          sizes="22vw"
-        />
+        {imgSrc && (
+          <Image
+            src={imgSrc}
+            alt={firstImage?.alt || collection.title}
+            fill
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+            sizes="22vw"
+            blurDataURL={firstImage?.asset?.metadata?.lqip}
+            placeholder={firstImage?.asset?.metadata?.lqip ? 'blur' : undefined}
+          />
+        )}
 
         {/* Hover overlay */}
         <div
@@ -93,7 +78,23 @@ function CollectionCard({ collection }: { collection: Collection }) {
   )
 }
 
-export function CollectionsSection() {
+interface CollectionsSectionProps {
+  collections: Collection[]
+  heading?: string
+  headingItalic?: string
+  subtext?: string
+}
+
+export function CollectionsSection({
+  collections,
+  heading = 'Twelve worlds.',
+  headingItalic = 'One vision.',
+  subtext = 'Each collection draws from workshops, quarries, and artisans found across five continents.',
+}: CollectionsSectionProps) {
+  const COL_1 = collections.slice(0, 4)
+  const COL_2 = collections.slice(4, 8)
+  const COL_3 = collections.slice(8, 12)
+
   const headerRef = useRef<HTMLDivElement>(null)
   const outerRef  = useRef<HTMLDivElement>(null)
   const isInView  = useInView(headerRef, { once: true, margin: '-10%' })
@@ -175,14 +176,13 @@ export function CollectionsSection() {
           <div>
             <SectionLabel className="mb-6 block">Collections</SectionLabel>
             <h2 className="font-heading text-espresso text-4xl md:text-6xl lg:text-7xl font-light leading-[0.95]">
-              Twelve worlds.
+              {heading}
               <br />
-              <em className="text-bronze">One vision.</em>
+              <em className="text-bronze">{headingItalic}</em>
             </h2>
           </div>
           <p className="hidden md:block text-charcoal/50 text-sm font-light max-w-xs text-right leading-relaxed">
-            Each collection draws from workshops, quarries, and artisans found
-            across five continents.
+            {subtext}
           </p>
         </motion.div>
       </div>
@@ -217,7 +217,7 @@ export function CollectionsSection() {
                 style={{ display: 'flex', flexDirection: 'column', gap: '6vw', width: '22vw' }}
               >
                 {COL_1.map((c) => (
-                  <CollectionCard key={c.id} collection={c} />
+                  <CollectionCard key={c.slug} collection={c} />
                 ))}
               </div>
             </div>
@@ -229,7 +229,7 @@ export function CollectionsSection() {
                 style={{ display: 'flex', flexDirection: 'column', gap: '6vw', width: '22vw' }}
               >
                 {COL_2.map((c) => (
-                  <CollectionCard key={c.id} collection={c} />
+                  <CollectionCard key={c.slug} collection={c} />
                 ))}
               </div>
             </div>
@@ -241,7 +241,7 @@ export function CollectionsSection() {
                 style={{ display: 'flex', flexDirection: 'column', gap: '6vw', width: '22vw' }}
               >
                 {COL_3.map((c) => (
-                  <CollectionCard key={c.id} collection={c} />
+                  <CollectionCard key={c.slug} collection={c} />
                 ))}
               </div>
             </div>
@@ -254,8 +254,8 @@ export function CollectionsSection() {
         className="flex flex-col gap-12 py-12 md:hidden"
         style={{ width: '90vw', margin: '0 auto' }}
       >
-        {COLLECTIONS.map((c) => (
-          <CollectionCard key={c.id} collection={c} />
+        {collections.map((c) => (
+          <CollectionCard key={c.slug} collection={c} />
         ))}
       </div>
     </section>
