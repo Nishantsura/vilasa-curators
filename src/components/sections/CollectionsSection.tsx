@@ -16,7 +16,7 @@ function CollectionCard({ collection }: { collection: Collection }) {
     : ''
 
   return (
-    <Link href={`/collections/${collection.slug}`} className="group block w-[22vw]">
+    <Link href={`/collections/${collection.slug}`} className="group block w-full">
       {/* Portrait image */}
       <div
         className="relative overflow-hidden bg-beige/30"

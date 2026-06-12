@@ -3,8 +3,8 @@
 import { useRef, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 import { SectionLabel } from '@/components/ui/SectionLabel'
-import { CTALink } from '@/components/ui/CTALink'
 import { ease } from '@/lib/animations'
 import type { Destination } from '@/types'
 import { sanityImageUrl } from '../../../sanity/lib/image'
@@ -121,11 +121,11 @@ export function DestinationsSection({ destinations }: { destinations: Destinatio
                     >
                       0{index + 1}
                     </span>
-                    <div className="flex items-end gap-6 mb-6">
-                      <span className="section-label text-taupe [writing-mode:vertical-rl] tracking-[0.3em] h-20">
+                    <div className="flex items-center gap-4 mb-6">
+                      <span className="section-label text-taupe tracking-[0.3em]">
                         {dest.name}
                       </span>
-                      <div className="w-12 h-[1px] bg-taupe/60 mb-1" />
+                      <div className="w-12 h-[1px] bg-taupe/60" />
                     </div>
                     <h2 className="font-heading text-ivory text-3xl md:text-4xl lg:text-5xl font-light leading-[1.1] mb-4">
                       {dest.tagline}
@@ -133,9 +133,16 @@ export function DestinationsSection({ destinations }: { destinations: Destinatio
                     <p className="text-ivory/50 text-sm md:text-base font-light leading-relaxed max-w-sm mb-8">
                       {dest.story}
                     </p>
-                    <CTALink href={`/destinations/${dest.slug}`} className="text-ivory/70">
+                    <Link
+                      href={`/destinations/${dest.slug}`}
+                      className="inline-flex items-center gap-2.5 px-5 py-2 text-ivory text-[10px] tracking-[0.22em] uppercase font-body font-medium transition-opacity duration-300 hover:opacity-80"
+                      style={{ backgroundColor: '#4a5240' }}
+                    >
                       Explore {dest.name}
-                    </CTALink>
+                      <svg width="13" height="9" viewBox="0 0 14 10" fill="none">
+                        <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </Link>
                   </div>
 
                   {/* Right: image */}

@@ -56,14 +56,14 @@ export function Navigation() {
       >
         {/* ── ROW 1: Logo + utility + CTA ── */}
         <div
-          className="flex items-center justify-between h-[52px] px-6 md:px-10"
+          className="flex items-center justify-between h-[52px] px-4 sm:px-6 md:px-10"
           style={{ borderBottom: '1px solid rgba(245,240,235,0.08)' }}
         >
           {/* Left: Logo + icons */}
-          <div className="flex items-center gap-0 h-full">
+          <div className="flex items-center gap-0 h-full min-w-0">
             <Link
               href="/"
-              className="font-heading text-ivory text-[13px] tracking-[0.22em] uppercase whitespace-nowrap hover:text-taupe transition-colors duration-300 pr-5"
+              className="font-heading text-ivory text-[11px] sm:text-[13px] tracking-[0.12em] sm:tracking-[0.2em] uppercase whitespace-nowrap hover:text-taupe transition-colors duration-300 pr-3 sm:pr-5"
             >
               Vilasa Curators
               <sup className="text-[8px] ml-0.5 font-body tracking-normal">®</sup>
@@ -75,7 +75,7 @@ export function Navigation() {
             <button
               onClick={() => setMenuOpen(true)}
               aria-label="Open menu"
-              className="lg:hidden flex items-center justify-center h-full px-4 text-ivory/65 hover:text-ivory transition-colors duration-300"
+              className="lg:hidden flex items-center justify-center h-full px-3 sm:px-4 text-ivory/65 hover:text-ivory transition-colors duration-300"
             >
               <DotsIcon />
             </button>
@@ -88,7 +88,7 @@ export function Navigation() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
-              className="flex items-center justify-center h-full px-4 text-ivory/65 hover:text-ivory transition-colors duration-300"
+              className="flex items-center justify-center h-full px-3 sm:px-4 text-ivory/65 hover:text-ivory transition-colors duration-300"
             >
               <WhatsAppIcon />
             </a>
@@ -97,10 +97,10 @@ export function Navigation() {
           {/* Right: CTA */}
           <Link
             href="/contact"
-            className="flex items-center gap-2.5 px-5 py-2 text-ivory text-[10px] tracking-[0.22em] uppercase font-body font-medium whitespace-nowrap transition-opacity duration-300 hover:opacity-80"
+            className="flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-5 py-2 text-ivory text-[10px] tracking-[0.18em] sm:tracking-[0.22em] uppercase font-body font-medium whitespace-nowrap transition-opacity duration-300 hover:opacity-80 flex-shrink-0"
             style={{ backgroundColor: '#4a5240' }}
           >
-            BEGIN SOURCING
+            BEGIN<span className="hidden sm:inline">&nbsp;SOURCING</span>
             <svg width="13" height="9" viewBox="0 0 14 10" fill="none">
               <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>

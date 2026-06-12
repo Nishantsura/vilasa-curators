@@ -29,10 +29,6 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          <motion.div variants={fadeUp}>
-            <SectionLabel className="mb-10 block">Begin</SectionLabel>
-          </motion.div>
-
           <motion.h2
             variants={fadeUp}
             className="font-heading text-espresso text-5xl md:text-7xl lg:text-8xl font-light leading-[0.9] mb-12"

@@ -67,12 +67,15 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
           },
         })
 
+        // Narrow viewports can't absorb the full horizontal fan — scale offsets down
+        const offsetScale = window.innerWidth < 768 ? 0.45 : 1
+
         CARDS.forEach((card, i) => {
           tl.to(
             cards[i],
             {
               y: card.y,
-              x: card.x,
+              x: card.x * offsetScale,
               rotation: card.rotate,
               opacity: 1,
               duration: 0.55,
@@ -177,8 +180,8 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
             <div
               className="relative"
               style={{
-                width: 'clamp(280px, 24vw, 360px)',
-                height: 'clamp(300px, 26vw, 400px)',
+                width: 'clamp(230px, 62vw, 360px)',
+                height: 'clamp(250px, 66vw, 400px)',
               }}
             >
               {CARDS.map((card, i) => (
@@ -191,17 +194,17 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
                   <div
                     className="flex flex-col justify-between"
                     style={{
-                      width: 'clamp(280px, 24vw, 360px)',
-                      height: 'clamp(300px, 26vw, 400px)',
+                      width: 'clamp(230px, 62vw, 360px)',
+                      height: 'clamp(250px, 66vw, 400px)',
                       backgroundColor: '#f5f0eb',
                       border: '1px solid rgba(26,23,19,0.1)',
-                      padding: 'clamp(24px, 2.5vw, 36px)',
+                      padding: 'clamp(22px, 2.5vw, 36px)',
                       boxShadow: '0 8px 40px rgba(26,23,19,0.12)',
                     }}
                   >
                     <h3
                       className="font-heading text-espresso font-light leading-[1.0] whitespace-pre-line"
-                      style={{ fontSize: 'clamp(32px, 3.2vw, 52px)' }}
+                      style={{ fontSize: 'clamp(26px, 3.2vw, 52px)' }}
                     >
                       {card.heading}
                     </h3>

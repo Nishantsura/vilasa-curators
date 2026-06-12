@@ -63,19 +63,23 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           <AnimatePresence>
             {phase === 'enter' && (
               <motion.div
-                className="mt-16 flex flex-col items-center gap-4"
+                className="mt-16 flex flex-col items-center gap-6"
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease }}
               >
                 <p className="section-label text-taupe/60 text-[10px]">
-                  For the best experience, enable sound.
+                  Objects sourced across four continents.
                 </p>
                 <button
                   onClick={handleEnter}
-                  className="cta-underline section-label text-ivory mt-2 hover:opacity-60 transition-opacity duration-300"
+                  className="flex items-center gap-2.5 px-5 py-2 text-ivory text-[10px] tracking-[0.22em] uppercase font-body font-medium transition-opacity duration-300 hover:opacity-80"
+                  style={{ backgroundColor: '#4a5240' }}
                 >
                   Enter Experience
+                  <svg width="13" height="9" viewBox="0 0 14 10" fill="none">
+                    <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </button>
               </motion.div>
             )}

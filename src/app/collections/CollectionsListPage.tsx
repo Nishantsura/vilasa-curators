@@ -47,11 +47,11 @@ export function CollectionsListPage({ collections }: { collections: Collection[]
                     {collection.title}
                   </span>
                 </div>
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-6 flex-shrink-0">
                   <span className="hidden md:block text-charcoal/40 text-sm font-light max-w-xs text-right leading-relaxed group-hover:text-charcoal/60 transition-colors duration-500">
                     {collection.description.split('.')[0]}.
                   </span>
-                  <span className="section-label text-taupe group-hover:text-espresso transition-colors duration-300">
+                  <span className="section-label text-taupe group-hover:text-espresso transition-colors duration-300 whitespace-nowrap">
                     View →
                   </span>
                 </div>

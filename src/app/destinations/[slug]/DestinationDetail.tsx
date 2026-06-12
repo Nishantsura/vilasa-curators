@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import type { Destination } from '@/types'
@@ -12,6 +13,15 @@ export function DestinationDetail({ destination }: { destination: Destination })
     <div className="bg-ivory min-h-screen">
       {/* Hero */}
       <section className="relative min-h-screen flex items-end bg-espresso overflow-hidden">
+        <Link
+          href="/destinations"
+          className="absolute top-24 left-8 md:left-16 z-20 flex items-center gap-2 text-ivory/60 hover:text-ivory transition-colors duration-300 section-label tracking-[0.2em]"
+        >
+          <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+            <path d="M5 1L1 5l4 4M1 5h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Destinations
+        </Link>
         <div className="absolute inset-0">
           {destination.image?.asset && (
             <Image

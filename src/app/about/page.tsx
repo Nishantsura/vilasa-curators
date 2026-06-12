@@ -55,11 +55,12 @@ export default function AboutPage() {
             className="relative aspect-[3/4] overflow-hidden"
           >
             <Image
-              src="/images/founder.jpg"
+              src="https://cdn.sanity.io/images/hl24yywq/production/dda4c48cef624c87465856db7ec0eeda900a47a2-3000x4000.jpg?w=1200&q=80&auto=format"
               alt="Founder of Vilasa Curators"
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
+              unoptimized
             />
           </motion.div>
 

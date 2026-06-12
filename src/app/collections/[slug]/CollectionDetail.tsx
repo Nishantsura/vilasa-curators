@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import type { Collection } from '@/types'
@@ -16,6 +17,15 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
     <div className="bg-ivory min-h-screen">
       {/* Header */}
       <section className="px-8 md:px-16 pt-40 pb-20 max-w-[1400px] mx-auto">
+        <Link
+          href="/collections"
+          className="inline-flex items-center gap-2 text-charcoal/40 hover:text-charcoal/70 transition-colors duration-300 section-label tracking-[0.2em] mb-10 block"
+        >
+          <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+            <path d="M5 1L1 5l4 4M1 5h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Collections
+        </Link>
         <motion.div variants={staggerContainer} initial="hidden" animate="visible">
           <motion.div variants={fadeUp}>
             <SectionLabel className="block mb-4">{collection.number}</SectionLabel>

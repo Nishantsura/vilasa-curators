@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { LoadingScreen } from '@/components/sections/LoadingScreen'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { PhilosophySection } from '@/components/sections/PhilosophySection'
@@ -23,11 +23,32 @@ export function HomePageClient({
   homePage,
   siteSettings,
 }: HomePageClientProps) {
+  const GATE_KEY = 'vilasa-entered-at'
+  const GATE_TTL = 24 * 60 * 60 * 1000 // 24 hours
+
+  const hasRecentEntry = () => {
+    try {
+      const ts = localStorage.getItem(GATE_KEY)
+      return ts ? Date.now() - Number(ts) < GATE_TTL : false
+    } catch {
+      return false
+    }
+  }
+
   const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    if (hasRecentEntry()) setLoaded(true)
+  }, [])
+
+  const handleEntered = () => {
+    try { localStorage.setItem(GATE_KEY, String(Date.now())) } catch { /* */ }
+    setLoaded(true)
+  }
 
   return (
     <>
-      {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
+      {!loaded && <LoadingScreen onComplete={handleEntered} />}
       {loaded && (
         <>
           <HeroSection homePage={homePage} siteSettings={siteSettings} />
