@@ -43,6 +43,12 @@ export interface NavItem {
   href: string
 }
 
+export interface PhilosophyCard {
+  heading: string
+  sub?: string
+  image?: SanityImage | null
+}
+
 export interface HomePage {
   heroHeadline: string
   heroHeadlineItalic: string
@@ -53,6 +59,7 @@ export interface HomePage {
   philosophyHeading: string
   philosophyHeadingItalic: string
   philosophyBody: string
+  philosophyCards?: PhilosophyCard[]
   collectionsHeading: string
   collectionsHeadingItalic: string
   collectionsSubtext: string

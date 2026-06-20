@@ -89,6 +89,19 @@ export const homePageQuery = groq`
     philosophyHeading,
     philosophyHeadingItalic,
     philosophyBody,
+    philosophyCards[] {
+      heading,
+      sub,
+      image {
+        asset->{
+          _id,
+          url,
+          metadata { lqip, dimensions }
+        },
+        hotspot,
+        crop
+      }
+    },
     collectionsHeading,
     collectionsHeadingItalic,
     collectionsSubtext,

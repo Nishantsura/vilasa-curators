@@ -89,7 +89,7 @@ export function HeroSection({ homePage, siteSettings }: HeroSectionProps) {
               <br />
               <em
                 className="font-heading"
-                style={{ fontStyle: 'italic', fontWeight: 300, color: 'rgba(245,240,235,0.82)' }}
+                style={{ fontStyle: 'italic', fontWeight: 300, color: 'rgba(245,240,235,0.82)', fontSize: 'clamp(32px, 4.6vw, 68px)' }}
               >
                 {homePage?.heroHeadlineItalic || 'FOR SPACES THAT FEEL INEVITABLE.'}
               </em>

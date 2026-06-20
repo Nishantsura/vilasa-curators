@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,83 +10,13 @@ import type { Destination } from '@/types'
 import { sanityImageUrl } from '../../../sanity/lib/image'
 
 export function DestinationsSection({ destinations }: { destinations: Destination[] }) {
-  const outerRef = useRef<HTMLElement>(null)
-  const trackRef = useRef<HTMLDivElement>(null)
   const labelRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(labelRef, { once: true, margin: '-10%' })
 
-  useEffect(() => {
-    let cancelled = false
-    let ctx: { revert: () => void } | undefined
-
-    const init = async () => {
-      const { gsap } = await import('gsap')
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-      gsap.registerPlugin(ScrollTrigger)
-
-      if (cancelled) return
-      if (!outerRef.current || !trackRef.current) return
-
-      const travelX = (destinations.length - 1) * window.innerWidth
-
-      ctx = gsap.context(() => {
-        // Translate the track horizontally as the outer section scrolls.
-        // CSS sticky on the inner viewport-height div handles the visual lock
-        // — no GSAP pin, no DOM node movement, no React removeChild conflict.
-        gsap.to(trackRef.current, {
-          x: -travelX,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: outerRef.current,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: 1.2,
-          },
-        })
-
-        // Subtle parallax on each image
-        const panels = trackRef.current!.querySelectorAll<HTMLElement>('.destination-panel')
-        panels.forEach((panel) => {
-          const img = panel.querySelector<HTMLElement>('.dest-img')
-          if (!img) return
-          gsap.fromTo(
-            img,
-            { yPercent: 5 },
-            {
-              yPercent: -5,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: outerRef.current,
-                start: 'top top',
-                end: 'bottom bottom',
-                scrub: 1.5,
-              },
-            }
-          )
-        })
-      }, outerRef)
-    }
-
-    init()
-    return () => {
-      cancelled = true
-      ctx?.revert()
-    }
-  }, [destinations.length])
-
   return (
-    /*
-     * Outer section height = 100vh per destination (first 100vh is the "pinned"
-     * view; remaining (N-1)*100vh provides scroll distance for the horizontal travel).
-     * CSS sticky on the inner div replaces GSAP pin — zero DOM mutation.
-     */
-    <section
-      ref={outerRef}
-      className="relative bg-espresso"
-      style={{ height: `${destinations.length * 100}vh` }}
-    >
-      {/* Section label */}
-      <div ref={labelRef} className="absolute top-8 left-8 md:left-16 z-10">
+    <section className="relative bg-espresso py-24 md:py-32">
+      {/* Section header */}
+      <div ref={labelRef} className="px-8 md:px-16 mb-12">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -96,84 +26,89 @@ export function DestinationsSection({ destinations }: { destinations: Destinatio
         </motion.div>
       </div>
 
-      {/* Sticky viewport — CSS locks this while outer section scrolls */}
-      <div className="sticky top-0 h-screen overflow-hidden">
-        {/* Horizontal track */}
-        <div
-          ref={trackRef}
-          className="flex h-full"
-          style={{ width: `${destinations.length * 100}vw` }}
-        >
-          {destinations.map((dest, index) => (
-            <div
-              key={dest.slug}
-              className="destination-panel relative flex-shrink-0 overflow-hidden"
-              style={{ width: '100vw', height: '100vh' }}
-            >
-              <div className="h-full flex items-center px-8 md:px-16">
-                <div className="max-w-[1400px] mx-auto w-full grid md:grid-cols-[1fr_1fr] gap-12 md:gap-20 items-center">
-
-                  {/* Left: text */}
-                  <div>
-                    <span
-                      className="font-heading text-ivory/10 font-light leading-none select-none block mb-6"
-                      style={{ fontSize: 'clamp(80px, 10vw, 140px)' }}
-                    >
-                      0{index + 1}
-                    </span>
-                    <div className="flex items-center gap-4 mb-6">
-                      <span className="section-label text-taupe tracking-[0.3em]">
-                        {dest.name}
-                      </span>
-                      <div className="w-12 h-[1px] bg-taupe/60" />
-                    </div>
-                    <h2 className="font-heading text-ivory text-3xl md:text-4xl lg:text-5xl font-light leading-[1.1] mb-4">
-                      {dest.tagline}
-                    </h2>
-                    <p className="text-ivory/50 text-sm md:text-base font-light leading-relaxed max-w-sm mb-8">
-                      {dest.story}
-                    </p>
-                    <Link
-                      href={`/destinations/${dest.slug}`}
-                      className="inline-flex items-center gap-2.5 px-5 py-2 text-ivory text-[10px] tracking-[0.22em] uppercase font-body font-medium transition-opacity duration-300 hover:opacity-80"
-                      style={{ backgroundColor: '#4a5240' }}
-                    >
-                      Explore {dest.name}
-                      <svg width="13" height="9" viewBox="0 0 14 10" fill="none">
-                        <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </Link>
-                  </div>
-
-                  {/* Right: image */}
-                  <div className="relative overflow-hidden hidden md:block" style={{ aspectRatio: '3 / 4', maxHeight: '70vh' }}>
-                    {dest.image?.asset && (
-                      <div className="dest-img absolute inset-0">
-                        <Image
-                          src={sanityImageUrl(dest.image, 1000)}
-                          alt={dest.image.alt || dest.name}
-                          fill
-                          className="object-cover"
-                          sizes="45vw"
-                          priority={index === 0}
-                          blurDataURL={dest.image.asset.metadata?.lqip}
-                          placeholder={dest.image.asset.metadata?.lqip ? 'blur' : undefined}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
+      {/* Horizontal scroll track */}
+      <div
+        className="flex gap-6 md:gap-10 overflow-x-auto px-8 md:px-16 pb-8 snap-x snap-mandatory"
+        style={{
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          WebkitOverflowScrolling: 'touch',
+        }}
+      >
+        <style>{`.destinations-track::-webkit-scrollbar { display: none; }`}</style>
+        {destinations.map((dest, index) => (
+          <motion.div
+            key={dest.slug}
+            className="flex-shrink-0 snap-start"
+            style={{ width: 'clamp(300px, 80vw, 520px)' }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-5%' }}
+            transition={{ duration: 0.7, delay: 0.08 * index, ease }}
+          >
+            {/* Image */}
+            <div className="relative overflow-hidden mb-6" style={{ aspectRatio: '3 / 4' }}>
+              {dest.image?.asset ? (
+                <Image
+                  src={sanityImageUrl(dest.image, 800)}
+                  alt={dest.image.alt || dest.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 80vw, 520px"
+                  priority={index === 0}
+                  blurDataURL={dest.image.asset.metadata?.lqip}
+                  placeholder={dest.image.asset.metadata?.lqip ? 'blur' : undefined}
+                />
+              ) : (
+                <div className="absolute inset-0 bg-charcoal/40" />
+              )}
+              <div
+                className="absolute inset-0"
+                style={{ background: 'linear-gradient(to top, rgba(26,23,19,0.7) 0%, transparent 50%)' }}
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <span className="section-label text-taupe tracking-[0.3em] block mb-2">
+                  {dest.name}
+                </span>
+                <span
+                  className="font-heading text-ivory/10 font-light leading-none select-none block"
+                  style={{ fontSize: 'clamp(60px, 8vw, 100px)' }}
+                >
+                  0{index + 1}
+                </span>
               </div>
             </div>
-          ))}
-        </div>
+
+            {/* Text */}
+            <h2 className="font-heading text-ivory text-2xl md:text-3xl font-light leading-[1.15] mb-3">
+              {dest.tagline}
+            </h2>
+            <p className="text-ivory/50 text-sm font-light leading-relaxed mb-6" style={{ maxWidth: 420 }}>
+              {dest.story}
+            </p>
+            <Link
+              href={`/destinations/${dest.slug}`}
+              className="inline-flex items-center gap-2.5 px-5 py-2 text-ivory text-[10px] tracking-[0.22em] uppercase font-body font-medium transition-opacity duration-300 hover:opacity-80"
+              style={{ backgroundColor: '#4a5240' }}
+            >
+              Explore {dest.name}
+              <svg width="13" height="9" viewBox="0 0 14 10" fill="none">
+                <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          </motion.div>
+        ))}
       </div>
 
-      {/* Progress indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-        {destinations.map((dest) => (
-          <div key={dest.slug} className="w-8 h-[1px] bg-ivory/20" />
-        ))}
+      {/* Scroll hint */}
+      <div className="px-8 md:px-16 mt-6 flex items-center gap-3">
+        <div className="w-8 h-[1px] bg-ivory/20" />
+        <span className="text-ivory/30 text-[10px] tracking-[0.25em] uppercase font-body">
+          Scroll sideways
+        </span>
+        <svg width="16" height="8" viewBox="0 0 16 8" fill="none" className="text-ivory/30">
+          <path d="M12 1l3 3-3 3M15 4H1" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
       </div>
     </section>
   )

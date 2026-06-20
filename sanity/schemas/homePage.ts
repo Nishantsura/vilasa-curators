@@ -70,6 +70,26 @@ export const homePage = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'philosophyCards',
+      title: 'Philosophy Cards',
+      type: 'array',
+      description: 'The 3 cards in the philosophy section (title, subtitle, and background image)',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({ name: 'heading', title: 'Heading', type: 'string', validation: (rule) => rule.required() }),
+            defineField({ name: 'sub', title: 'Subtitle', type: 'text', rows: 2 }),
+            defineField({ name: 'image', title: 'Background Image', type: 'image', options: { hotspot: true } }),
+          ],
+          preview: {
+            select: { title: 'heading', media: 'image' },
+          },
+        },
+      ],
+      validation: (rule) => rule.max(5),
+    }),
+    defineField({
       name: 'collectionsHeading',
       title: 'Collections Section Heading',
       type: 'string',
