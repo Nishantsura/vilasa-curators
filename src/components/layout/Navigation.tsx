@@ -97,8 +97,13 @@ export function Navigation() {
           {/* Right: CTA */}
           <Link
             href="/contact"
-            className="flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-5 py-2 text-ivory text-[10px] tracking-[0.18em] sm:tracking-[0.22em] uppercase font-body font-medium whitespace-nowrap transition-opacity duration-300 hover:opacity-80 flex-shrink-0"
-            style={{ backgroundColor: '#4a5240' }}
+            className="flex items-center gap-2.5 px-5 py-2 text-[10px] tracking-[0.22em] uppercase font-body font-medium whitespace-nowrap transition-all duration-300 hover:opacity-90 flex-shrink-0"
+            style={{
+              backgroundColor: '#4a5240',
+              border: '1px solid rgba(245,240,235,0.18)',
+              color: '#f5f0eb',
+              borderRadius: '2px',
+            }}
           >
             BEGIN<span className="hidden sm:inline">&nbsp;SOURCING</span>
             <svg width="13" height="9" viewBox="0 0 14 10" fill="none">

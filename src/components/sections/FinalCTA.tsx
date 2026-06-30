@@ -89,7 +89,7 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
           {/* Founder signature line */}
           <div className="pt-8 border-t border-beige/60">
             <p className="font-heading italic text-taupe text-xl font-light">
-              Vilasa Curators
+              {siteSettings?.tagline ?? 'Vilasa Curators'}
             </p>
           </div>
         </motion.div>

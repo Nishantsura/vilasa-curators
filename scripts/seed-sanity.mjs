@@ -129,6 +129,8 @@ const homePage = {
     { _type: 'object', _key: 'card2', heading: 'THE ARTISAN\nALLIANCE.', sub: '' },
     { _type: 'object', _key: 'card3', heading: 'CRAFTED IN\nSINGULARITY.', sub: 'Access to private reserves and singular creations that no international buying guide has ever documented.' },
   ],
+  destinationsHeading: 'Five countries.',
+  destinationsHeadingItalic: 'Infinite sourcing.',
   collectionsHeading: 'Twelve worlds.',
   collectionsHeadingItalic: 'One vision.',
   collectionsSubtext: 'Each collection draws from workshops, quarries, and artisans found across five continents.',
@@ -158,7 +160,25 @@ async function seed() {
 
   const transaction = client.transaction()
   for (const doc of allDocs) {
-    transaction.createOrReplace(doc)
+    // createIfNotExists + patch: safe for re-runs — never overwrites images or
+    // other content added via Studio. Only sets fields present in the seed data
+    // if the document doesn't exist yet; otherwise patches text fields only.
+    transaction.createIfNotExists(doc)
+
+    const textFields = { ...doc }
+    delete textFields._id
+    delete textFields._type
+    delete textFields.images  // never overwrite Studio-uploaded images
+    delete textFields.image   // never overwrite Studio-uploaded images
+    if (textFields.philosophyCards) {
+      // Keep card text but strip image keys so we don't null out uploaded images
+      textFields.philosophyCards = textFields.philosophyCards.map(c => {
+        const { image, ...rest } = c
+        return rest
+      })
+    }
+
+    transaction.patch(doc._id, { set: textFields })
   }
 
   const result = await transaction.commit()
@@ -168,7 +188,7 @@ async function seed() {
   console.log(`  - ${collections.length} collections`)
   console.log(`  - 1 home page`)
   console.log(`  - 1 site settings`)
-  console.log('\nNote: Images are empty — upload them through the Studio.')
+  console.log('\nNote: Text content updated. Images are preserved — upload/change them through the Studio.')
 }
 
 seed().catch((err) => {

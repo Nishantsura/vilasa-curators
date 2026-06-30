@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { PROCESS_STEPS } from '@/lib/constants'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { CTALink } from '@/components/ui/CTALink'
@@ -9,15 +10,35 @@ import { staggerContainer, fadeUp, ease } from '@/lib/animations'
 export default function ProcessPage() {
   return (
     <div className="bg-bone min-h-screen">
-      {/* Header */}
-      <section className="px-8 md:px-16 pt-40 pb-20 max-w-[1400px] mx-auto">
-        <motion.div variants={staggerContainer} initial="hidden" animate="visible">
+      {/* Hero header with background */}
+      <section className="relative min-h-[55vh] flex items-end bg-espresso overflow-hidden pt-24">
+        <div className="absolute inset-0">
+          <Image
+            src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1920&q=80&auto=format"
+            alt="Artisan workshop"
+            fill
+            className="object-cover opacity-55"
+            priority
+            unoptimized
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(to top, rgba(26,23,19,0.78) 0%, rgba(26,23,19,0.15) 55%, transparent 100%)' }}
+          />
+        </div>
+
+        <motion.div
+          className="relative z-10 px-8 md:px-16 pb-20 max-w-[1400px] mx-auto w-full"
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+        >
           <motion.div variants={fadeUp}>
-            <SectionLabel className="block mb-8">Process</SectionLabel>
+            <SectionLabel className="text-taupe block mb-8">Process</SectionLabel>
           </motion.div>
           <motion.h1
             variants={fadeUp}
-            className="font-heading text-espresso text-5xl md:text-7xl font-light leading-[0.95]"
+            className="font-heading text-ivory text-5xl md:text-7xl font-light leading-[0.95]"
           >
             How a room
             <br />
@@ -85,9 +106,12 @@ export default function ProcessPage() {
             <br />
             <em className="text-bronze">your journey?</em>
           </h2>
-          <CTALink href="/contact" className="text-ivory/70">
+          <a href="/contact" className="btn-gold">
             Begin a Conversation
-          </CTALink>
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+              <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
         </motion.div>
       </section>
     </div>

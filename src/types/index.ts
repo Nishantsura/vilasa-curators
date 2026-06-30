@@ -19,17 +19,16 @@ export interface Destination {
   story: string
   materials: string[]
   image: SanityImage | null
-  imageUrl?: string
 }
 
 export interface Collection {
-  id?: string
   number: string
   title: string
   description: string
   images: SanityImage[]
   slug: string
 }
+
 
 export interface ProcessStep {
   number: string
@@ -60,6 +59,8 @@ export interface HomePage {
   philosophyHeadingItalic: string
   philosophyBody: string
   philosophyCards?: PhilosophyCard[]
+  destinationsHeading: string
+  destinationsHeadingItalic: string
   collectionsHeading: string
   collectionsHeadingItalic: string
   collectionsSubtext: string

@@ -3,13 +3,13 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import type { Collection } from '@/types'
+import type { Collection, SiteSettings } from '@/types'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { CTALink } from '@/components/ui/CTALink'
 import { staggerContainer, fadeUp, imageReveal, ease } from '@/lib/animations'
 import { sanityImageUrl } from '../../../../sanity/lib/image'
 
-export function CollectionDetail({ collection }: { collection: Collection }) {
+export function CollectionDetail({ collection, siteSettings }: { collection: Collection; siteSettings?: SiteSettings | null }) {
   const firstImage = collection.images?.[0]
   const additionalImages = collection.images?.slice(1) ?? []
 
@@ -50,9 +50,12 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
           <p className="font-heading text-espresso text-2xl md:text-3xl font-light leading-[1.3] mb-8">
             {collection.description}
           </p>
-          <CTALink href="/contact">
+          <Link href="/contact" className="btn-dark">
             Enquire About This Collection
-          </CTALink>
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+              <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
         </motion.div>
 
         {firstImage?.asset && (
@@ -116,9 +119,14 @@ export function CollectionDetail({ collection }: { collection: Collection }) {
           transition={{ duration: 0.9, ease }}
         >
           <p className="font-heading text-espresso text-2xl md:text-3xl font-light italic leading-[1.3] mb-8">
-            "More than objects. We compose atmospheres."
+            &ldquo;{siteSettings?.tagline ?? 'More than objects. We compose atmospheres.'}&rdquo;
           </p>
-          <CTALink href="/contact">Begin a Conversation</CTALink>
+          <Link href="/contact" className="btn-dark">
+            Begin a Conversation
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+              <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
         </motion.div>
       </section>
     </div>

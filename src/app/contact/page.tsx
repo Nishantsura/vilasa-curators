@@ -123,9 +123,12 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
-                  className="cta-underline section-label text-espresso mt-4"
+                  className="btn-dark mt-4"
                 >
-                  Send Enquiry →
+                  Send Enquiry
+                  <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+                    <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </button>
               </form>
             ) : (

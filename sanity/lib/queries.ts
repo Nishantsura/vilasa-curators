@@ -102,6 +102,8 @@ export const homePageQuery = groq`
         crop
       }
     },
+    destinationsHeading,
+    destinationsHeadingItalic,
     collectionsHeading,
     collectionsHeadingItalic,
     collectionsSubtext,

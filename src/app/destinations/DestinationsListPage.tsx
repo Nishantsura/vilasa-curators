@@ -8,7 +8,17 @@ import { CTALink } from '@/components/ui/CTALink'
 import { imageReveal, fadeUp, staggerContainer, ease } from '@/lib/animations'
 import { sanityImageUrl } from '../../../sanity/lib/image'
 
-export function DestinationsListPage({ destinations }: { destinations: Destination[] }) {
+interface DestinationsListPageProps {
+  destinations: Destination[]
+  heading?: string
+  headingItalic?: string
+}
+
+export function DestinationsListPage({
+  destinations,
+  heading = 'Five countries.',
+  headingItalic = 'Infinite sourcing.',
+}: DestinationsListPageProps) {
   return (
     <div className="bg-ivory min-h-screen">
       {/* Header */}
@@ -25,9 +35,9 @@ export function DestinationsListPage({ destinations }: { destinations: Destinati
             variants={fadeUp}
             className="font-heading text-espresso text-5xl md:text-7xl font-light leading-[0.95]"
           >
-            Five countries.
+            {heading}
             <br />
-            <em className="text-bronze">Infinite sourcing.</em>
+            <em className="text-bronze">{headingItalic}</em>
           </motion.h1>
         </motion.div>
       </section>

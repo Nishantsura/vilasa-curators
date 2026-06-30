@@ -1,13 +1,19 @@
 import { sanityFetch } from '../../../sanity/lib/client'
-import { allCollectionsQuery } from '../../../sanity/lib/queries'
-import type { Collection } from '@/types'
+import { allCollectionsQuery, homePageQuery } from '../../../sanity/lib/queries'
+import type { Collection, HomePage } from '@/types'
 import { CollectionsListPage } from './CollectionsListPage'
 
 export default async function CollectionsPage() {
-  const collections = await sanityFetch<Collection[]>({
-    query: allCollectionsQuery,
-    tags: ['collection'],
-  })
+  const [collections, homePage] = await Promise.all([
+    sanityFetch<Collection[]>({ query: allCollectionsQuery, tags: ['collection'] }),
+    sanityFetch<HomePage | null>({ query: homePageQuery, tags: ['homePage'] }),
+  ])
 
-  return <CollectionsListPage collections={collections} />
+  return (
+    <CollectionsListPage
+      collections={collections}
+      heading={homePage?.collectionsHeading}
+      headingItalic={homePage?.collectionsHeadingItalic}
+    />
+  )
 }

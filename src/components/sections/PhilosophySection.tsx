@@ -148,11 +148,7 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.35, ease }}
             >
-              <Link
-                href="/process"
-                className="inline-flex items-center gap-3 px-6 py-3.5 font-body font-medium uppercase tracking-[0.18em] text-ivory transition-opacity duration-300 hover:opacity-80"
-                style={{ backgroundColor: '#1a1713', fontSize: 11 }}
-              >
+              <Link href="/process" className="btn-dark">
                 HOW WE SOURCE
                 <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
                   <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

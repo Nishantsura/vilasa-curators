@@ -39,7 +39,7 @@ export function DestinationsSection({ destinations }: { destinations: Destinatio
         {destinations.map((dest, index) => (
           <motion.div
             key={dest.slug}
-            className="flex-shrink-0 snap-start"
+            className="flex-shrink-0 snap-start group"
             style={{ width: 'clamp(300px, 80vw, 520px)' }}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -53,7 +53,7 @@ export function DestinationsSection({ destinations }: { destinations: Destinatio
                   src={sanityImageUrl(dest.image, 800)}
                   alt={dest.image.alt || dest.name}
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                   sizes="(max-width: 768px) 80vw, 520px"
                   priority={index === 0}
                   blurDataURL={dest.image.asset.metadata?.lqip}
@@ -86,11 +86,7 @@ export function DestinationsSection({ destinations }: { destinations: Destinatio
             <p className="text-ivory/50 text-sm font-light leading-relaxed mb-6" style={{ maxWidth: 420 }}>
               {dest.story}
             </p>
-            <Link
-              href={`/destinations/${dest.slug}`}
-              className="inline-flex items-center gap-2.5 px-5 py-2 text-ivory text-[10px] tracking-[0.22em] uppercase font-body font-medium transition-opacity duration-300 hover:opacity-80"
-              style={{ backgroundColor: '#4a5240' }}
-            >
+            <Link href={`/destinations/${dest.slug}`} className="btn-gold">
               Explore {dest.name}
               <svg width="13" height="9" viewBox="0 0 14 10" fill="none">
                 <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

@@ -6,7 +6,17 @@ import type { Collection } from '@/types'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { fadeUp, staggerContainer, ease } from '@/lib/animations'
 
-export function CollectionsListPage({ collections }: { collections: Collection[] }) {
+interface CollectionsListPageProps {
+  collections: Collection[]
+  heading?: string
+  headingItalic?: string
+}
+
+export function CollectionsListPage({
+  collections,
+  heading = 'Twelve worlds.',
+  headingItalic = 'One vision.',
+}: CollectionsListPageProps) {
   return (
     <div className="bg-ivory min-h-screen">
       {/* Header */}
@@ -19,9 +29,9 @@ export function CollectionsListPage({ collections }: { collections: Collection[]
             variants={fadeUp}
             className="font-heading text-espresso text-5xl md:text-7xl font-light leading-[0.95]"
           >
-            Twelve worlds.
+            {heading}
             <br />
-            <em className="text-bronze">One vision.</em>
+            <em className="text-bronze">{headingItalic}</em>
           </motion.h1>
         </motion.div>
       </section>

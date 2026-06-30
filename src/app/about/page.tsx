@@ -12,15 +12,16 @@ export default function AboutPage() {
       <section className="relative min-h-[70vh] flex items-end bg-espresso overflow-hidden pt-24">
         <div className="absolute inset-0">
           <Image
-            src="/images/about-hero.jpg"
-            alt="Vilasa Curators"
+            src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80&auto=format"
+            alt="Luxury interior space"
             fill
-            className="object-cover opacity-50"
+            className="object-cover opacity-65"
             priority
+            unoptimized
           />
           <div
             className="absolute inset-0"
-            style={{ background: 'linear-gradient(to top, rgba(26,23,19,0.9) 0%, transparent 60%)' }}
+            style={{ background: 'linear-gradient(to top, rgba(26,23,19,0.78) 0%, rgba(26,23,19,0.15) 55%, transparent 100%)' }}
           />
         </div>
 

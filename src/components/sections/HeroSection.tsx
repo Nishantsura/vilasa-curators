@@ -104,8 +104,7 @@ export function HeroSection({ homePage, siteSettings }: HeroSectionProps) {
 
             <motion.a
               href={homePage?.heroCtaHref || '/collections'}
-              className="inline-flex items-center gap-3 px-6 py-3.5 text-ivory font-body font-medium uppercase tracking-[0.2em] transition-opacity duration-300 hover:opacity-80 whitespace-nowrap w-fit"
-              style={{ backgroundColor: '#4a5240', fontSize: 11 }}
+              className="btn-gold"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.9, ease }}
@@ -118,22 +117,31 @@ export function HeroSection({ homePage, siteSettings }: HeroSectionProps) {
           </motion.div>
 
           {/* CENTER — featured label (desktop only) */}
-          <motion.div
-            className="hidden md:flex flex-col items-center gap-1 absolute left-1/2 -translate-x-1/2 bottom-10 md:bottom-14"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.0, delay: 1.2, ease }}
-          >
-            <p className="font-body text-ivory/50 tracking-[0.28em] uppercase text-center" style={{ fontSize: 9 }}>
-              FEATURED COLLECTION
-            </p>
-            <p className="font-heading text-ivory/75 tracking-[0.1em] uppercase text-center" style={{ fontSize: 13 }}>
-              ARTIFACTS &amp; STATEMENT PIECES
-            </p>
-            <p className="font-body text-ivory/35 tracking-[0.32em] uppercase text-center" style={{ fontSize: 9 }}>
-              ITALY · BALI · VIETNAM · MEXICO
-            </p>
-          </motion.div>
+          {homePage?.featuredLabel && (() => {
+            const [line1, line2, line3] = homePage.featuredLabel.split(' — ')
+            return (
+              <motion.div
+                className="hidden md:flex flex-col items-center gap-1 absolute left-1/2 -translate-x-1/2 bottom-10 md:bottom-14"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.0, delay: 1.2, ease }}
+              >
+                <p className="font-body text-ivory/50 tracking-[0.28em] uppercase text-center" style={{ fontSize: 9 }}>
+                  {line1}
+                </p>
+                {line2 && (
+                  <p className="font-heading text-ivory/75 tracking-[0.1em] uppercase text-center" style={{ fontSize: 13 }}>
+                    {line2}
+                  </p>
+                )}
+                {line3 && (
+                  <p className="font-body text-ivory/35 tracking-[0.32em] uppercase text-center" style={{ fontSize: 9 }}>
+                    {line3}
+                  </p>
+                )}
+              </motion.div>
+            )
+          })()}
 
           {/* RIGHT — WhatsApp CTA */}
           <motion.div
@@ -146,8 +154,7 @@ export function HeroSection({ homePage, siteSettings }: HeroSectionProps) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Chat on WhatsApp"
-              className="inline-flex items-center gap-2.5 px-5 py-2 text-ivory text-[10px] tracking-[0.22em] uppercase font-body font-medium transition-opacity duration-300 hover:opacity-80"
-              style={{ backgroundColor: '#4a5240' }}
+              className="btn-gold"
             >
               <WhatsAppIcon />
               Whatsapp

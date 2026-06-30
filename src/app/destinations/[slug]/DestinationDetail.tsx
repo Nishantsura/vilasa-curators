@@ -28,7 +28,7 @@ export function DestinationDetail({ destination }: { destination: Destination })
               src={sanityImageUrl(destination.image, 1920)}
               alt={destination.image.alt || destination.name}
               fill
-              className="object-cover opacity-60"
+              className="object-cover opacity-70"
               priority
               blurDataURL={destination.image.asset.metadata?.lqip}
               placeholder={destination.image.asset.metadata?.lqip ? 'blur' : undefined}
@@ -36,7 +36,7 @@ export function DestinationDetail({ destination }: { destination: Destination })
           )}
           <div
             className="absolute inset-0"
-            style={{ background: 'linear-gradient(to top, rgba(26,23,19,0.85) 0%, transparent 50%)' }}
+            style={{ background: 'linear-gradient(to top, rgba(26,23,19,0.75) 0%, rgba(26,23,19,0.2) 50%, transparent 100%)' }}
           />
         </div>
 

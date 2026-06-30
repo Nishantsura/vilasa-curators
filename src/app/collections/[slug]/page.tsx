@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { sanityFetch } from '../../../../sanity/lib/client'
-import { allCollectionsQuery, collectionBySlugQuery } from '../../../../sanity/lib/queries'
+import { allCollectionsQuery, collectionBySlugQuery, siteSettingsQuery } from '../../../../sanity/lib/queries'
 import { CollectionDetail } from './CollectionDetail'
-import type { Collection } from '@/types'
+import type { Collection, SiteSettings } from '@/types'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -33,12 +33,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CollectionPage({ params }: Props) {
   const { slug } = await params
-  const collection = await sanityFetch<Collection | null>({
-    query: collectionBySlugQuery,
-    params: { slug },
-    tags: ['collection'],
-  })
+  const [collection, siteSettings] = await Promise.all([
+    sanityFetch<Collection | null>({ query: collectionBySlugQuery, params: { slug }, tags: ['collection'] }),
+    sanityFetch<SiteSettings | null>({ query: siteSettingsQuery, tags: ['siteSettings'] }),
+  ])
   if (!collection) notFound()
 
-  return <CollectionDetail collection={collection} />
+  return <CollectionDetail collection={collection} siteSettings={siteSettings} />
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -66,7 +66,7 @@ function CollectionCard({ collection }: { collection: Collection }) {
       <div className="pt-4 pb-2">
         <h3
           className="font-heading text-espresso font-light leading-tight"
-          style={{ fontSize: 'clamp(16px, 1.4vw, 22px)' }}
+          style={{ fontSize: 'clamp(18px, 1.5vw, 24px)' }}
         >
           {collection.title}
         </h3>
@@ -75,6 +75,38 @@ function CollectionCard({ collection }: { collection: Collection }) {
         </span>
       </div>
     </Link>
+  )
+}
+
+function MobileCollections({ collections }: { collections: Collection[] }) {
+  const [showAll, setShowAll] = useState(false)
+  const visible = showAll ? collections : collections.slice(0, 4)
+
+  return (
+    <div
+      className="flex flex-col gap-12 py-12 md:hidden"
+      style={{ width: '90vw', margin: '0 auto' }}
+    >
+      {visible.map((c) => (
+        <CollectionCard key={c.slug} collection={c} />
+      ))}
+      {!showAll && collections.length > 4 && (
+        <motion.div
+          className="flex justify-center pt-4"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease }}
+        >
+          <button onClick={() => setShowAll(true)} className="btn-dark">
+            View All Collections
+            <svg width="13" height="9" viewBox="0 0 14 10" fill="none">
+              <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </motion.div>
+      )}
+    </div>
   )
 }
 
@@ -249,15 +281,8 @@ export function CollectionsSection({
         </div>
       </div>
 
-      {/* ── Mobile: single column ── */}
-      <div
-        className="flex flex-col gap-12 py-12 md:hidden"
-        style={{ width: '90vw', margin: '0 auto' }}
-      >
-        {collections.map((c) => (
-          <CollectionCard key={c.slug} collection={c} />
-        ))}
-      </div>
+      {/* ── Mobile: single column (4 cards + view all) ── */}
+      <MobileCollections collections={collections} />
     </section>
   )
 }

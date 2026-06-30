@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import { Cormorant_Garamond, Inter_Tight } from 'next/font/google'
 import './globals.css'
 import { SiteChrome } from '@/components/layout/SiteChrome'
+import { sanityFetch } from '../../sanity/lib/client'
+import { siteSettingsQuery } from '../../sanity/lib/queries'
+import type { SiteSettings } from '@/types'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -18,15 +21,26 @@ const interTight = Inter_Tight({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  title: 'Vilasa Curators — Global Luxury Sourcing',
-  description:
-    "We source the world's most considered objects for spaces that feel inevitable. Global luxury furniture sourcing from Italy, Vietnam, Bali, China, and Mexico.",
-  openGraph: {
-    title: 'Vilasa Curators',
-    description: 'More than objects. We compose atmospheres.',
-    type: 'website',
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await sanityFetch<SiteSettings | null>({
+    query: siteSettingsQuery,
+    tags: ['siteSettings'],
+  })
+
+  const title = settings?.siteTitle ?? 'Vilasa Curators — Global Luxury Sourcing'
+  const description = settings?.siteDescription ?? "We source the world's most considered objects for spaces that feel inevitable."
+  const ogImageUrl = settings?.ogImage?.asset?.url
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title: settings?.siteTitle ?? 'Vilasa Curators',
+      description: settings?.tagline ?? 'More than objects. We compose atmospheres.',
+      type: 'website',
+      ...(ogImageUrl ? { images: [{ url: ogImageUrl }] } : {}),
+    },
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

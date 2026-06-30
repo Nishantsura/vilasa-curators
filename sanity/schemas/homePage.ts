@@ -90,6 +90,18 @@ export const homePage = defineType({
       validation: (rule) => rule.max(5),
     }),
     defineField({
+      name: 'destinationsHeading',
+      title: 'Destinations Page Heading',
+      type: 'string',
+      description: 'Main heading on the /destinations page (e.g. "Five countries.")',
+    }),
+    defineField({
+      name: 'destinationsHeadingItalic',
+      title: 'Destinations Page Heading (Italic)',
+      type: 'string',
+      description: 'Italic line of the destinations page heading (e.g. "Infinite sourcing.")',
+    }),
+    defineField({
       name: 'collectionsHeading',
       title: 'Collections Section Heading',
       type: 'string',
