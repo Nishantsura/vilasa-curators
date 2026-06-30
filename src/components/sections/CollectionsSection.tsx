@@ -9,7 +9,7 @@ import { ease } from '@/lib/animations'
 import type { Collection } from '@/types'
 import { sanityImageUrl } from '../../../sanity/lib/image'
 
-function CollectionCard({ collection }: { collection: Collection }) {
+function CollectionCard({ collection, isMobile }: { collection: Collection; isMobile?: boolean }) {
   const firstImage = collection.images?.[0]
   const imgSrc = firstImage?.asset
     ? sanityImageUrl(firstImage, 800)
@@ -20,7 +20,7 @@ function CollectionCard({ collection }: { collection: Collection }) {
       {/* Portrait image */}
       <div
         className="relative overflow-hidden bg-beige/30"
-        style={{ aspectRatio: '3 / 4', willChange: 'transform' }}
+        style={{ aspectRatio: '3 / 4', willChange: 'transform', borderRadius: 12 }}
       >
         {imgSrc && (
           <Image
@@ -28,52 +28,62 @@ function CollectionCard({ collection }: { collection: Collection }) {
             alt={firstImage?.alt || collection.title}
             fill
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
-            sizes="22vw"
+            sizes={isMobile ? '90vw' : '22vw'}
             blurDataURL={firstImage?.asset?.metadata?.lqip}
             placeholder={firstImage?.asset?.metadata?.lqip ? 'blur' : undefined}
           />
         )}
 
-        {/* Hover overlay */}
+        {/* Gradient overlay — always visible on mobile, hover on desktop */}
         <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          className={`absolute inset-0 transition-opacity duration-500 ${isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
           style={{
             background:
-              'linear-gradient(to top, rgba(26,23,19,0.88) 0%, rgba(26,23,19,0.35) 55%, transparent 100%)',
+              'linear-gradient(to top, rgba(26,23,19,0.88) 0%, rgba(26,23,19,0.45) 50%, transparent 100%)',
           }}
         />
 
         {/* Collection number — ghosted watermark */}
         <span
-          className="absolute top-5 right-5 font-heading font-light leading-none select-none pointer-events-none transition-opacity duration-500 group-hover:opacity-0"
+          className={`absolute top-5 right-5 font-heading font-light leading-none select-none pointer-events-none transition-opacity duration-500 ${isMobile ? '' : 'group-hover:opacity-0'}`}
           style={{ fontSize: 'clamp(48px, 4.5vw, 72px)', color: 'rgba(245,240,235,0.14)' }}
         >
           {collection.number}
         </span>
 
-        {/* Description rises on hover */}
-        <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out">
+        {/* Title + description on image — always visible on mobile, hover on desktop */}
+        <div className={`absolute bottom-0 left-0 right-0 p-5 transition-all duration-500 ease-out ${isMobile ? 'opacity-100 translate-y-0' : 'translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100'}`}>
+          {isMobile && (
+            <h3
+              className="font-heading text-ivory font-light leading-tight mb-2"
+              style={{ fontSize: '22px' }}
+            >
+              {collection.title}
+            </h3>
+          )}
           <p
             className="text-ivory/75 font-light leading-relaxed"
-            style={{ fontSize: 'clamp(11px, 0.85vw, 13px)' }}
+            style={{ fontSize: isMobile ? '13px' : 'clamp(11px, 0.85vw, 13px)' }}
           >
             {collection.description}
           </p>
         </div>
       </div>
 
-      {/* Title */}
-      <div className="pt-4 pb-2">
-        <h3
-          className="font-heading text-espresso font-light leading-tight"
-          style={{ fontSize: 'clamp(18px, 1.5vw, 24px)' }}
-        >
-          {collection.title}
-        </h3>
-        <span className="section-label text-bronze mt-2 block opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          Explore →
-        </span>
-      </div>
+      {/* Title — below image on desktop only */}
+      {!isMobile && (
+        <div className="pt-4 pb-2">
+          <h3
+            className="font-heading text-espresso font-light leading-tight"
+            style={{ fontSize: 'clamp(18px, 1.5vw, 24px)' }}
+          >
+            {collection.title}
+          </h3>
+          <span className="section-label text-bronze mt-2 block opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            Explore →
+          </span>
+        </div>
+      )}
     </Link>
   )
 }
@@ -84,11 +94,10 @@ function MobileCollections({ collections }: { collections: Collection[] }) {
 
   return (
     <div
-      className="flex flex-col gap-12 py-12 md:hidden"
-      style={{ width: '90vw', margin: '0 auto' }}
+      className="flex flex-col gap-10 py-10 md:hidden section-px"
     >
       {visible.map((c) => (
-        <CollectionCard key={c.slug} collection={c} />
+        <CollectionCard key={c.slug} collection={c} isMobile />
       ))}
       {!showAll && collections.length > 4 && (
         <motion.div
@@ -98,7 +107,7 @@ function MobileCollections({ collections }: { collections: Collection[] }) {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease }}
         >
-          <button onClick={() => setShowAll(true)} className="btn-dark">
+          <button onClick={() => setShowAll(true)} className="btn-primary-light">
             View All Collections
             <svg width="13" height="9" viewBox="0 0 14 10" fill="none">
               <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -198,7 +207,7 @@ export function CollectionsSection({
   return (
     <section className="bg-bone">
       {/* Section header — scrolls away before carousel locks */}
-      <div ref={headerRef} className="px-8 md:px-16 pt-28 md:pt-40 pb-16 max-w-[1400px] mx-auto">
+      <div ref={headerRef} className="section-px pt-20 xs:pt-24 md:pt-32 lg:pt-40 pb-12 md:pb-16 content-max">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -207,7 +216,7 @@ export function CollectionsSection({
         >
           <div>
             <SectionLabel className="mb-6 block">Collections</SectionLabel>
-            <h2 className="font-heading text-espresso text-4xl md:text-6xl lg:text-7xl font-light leading-[0.95]">
+            <h2 className="font-heading text-espresso text-3xl md:text-5xl lg:text-7xl font-light leading-[0.95]">
               {heading}
               <br />
               <em className="text-bronze">{headingItalic}</em>

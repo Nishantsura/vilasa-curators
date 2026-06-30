@@ -22,7 +22,7 @@ export function DestinationsListPage({
   return (
     <div className="bg-ivory min-h-screen">
       {/* Header */}
-      <section className="px-8 md:px-16 pt-40 pb-20 max-w-[1400px] mx-auto">
+      <section className="section-px pt-40 pb-20 content-max">
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -43,7 +43,7 @@ export function DestinationsListPage({
       </section>
 
       {/* Destinations grid */}
-      <section className="px-8 md:px-16 pb-32 max-w-[1400px] mx-auto space-y-32">
+      <section className="section-px pb-32 content-max space-y-32">
         {destinations.map((dest, index) => (
           <motion.div
             key={dest.slug}

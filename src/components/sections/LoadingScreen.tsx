@@ -60,16 +60,17 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
             animate={{ opacity: 1 }}
             transition={{ duration: 1.0, ease }}
           >
-            <h1
-              className="font-heading text-ivory uppercase font-light"
+            <Image
+              src="/images/Vilasa png.png"
+              alt="Vilasa — Luxurious Living"
+              width={280}
+              height={70}
+              className="h-16 sm:h-20 md:h-28 w-auto mx-auto"
               style={{
-                fontSize: 'clamp(22px, 5vw, 56px)',
-                letterSpacing: '0.32em',
-                textShadow: '0 2px 32px rgba(16,13,10,0.95), 0 0 60px rgba(16,13,10,0.7)',
+                filter: 'brightness(0) invert(1) drop-shadow(0 2px 32px rgba(16,13,10,0.95))',
               }}
-            >
-              Vilasa Curators
-            </h1>
+              priority
+            />
           </motion.div>
 
           {/* Tagline */}
@@ -110,7 +111,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
                 >
                   Objects sourced across four continents.
                 </p>
-                <button onClick={handleEnter} className="btn-gold">
+                <button onClick={handleEnter} className="btn-gold-ceremonial">
                   Enter Experience
                   <svg width="13" height="9" viewBox="0 0 14 10" fill="none">
                     <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

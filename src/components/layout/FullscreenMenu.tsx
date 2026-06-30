@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { NAV_ITEMS } from '@/lib/constants'
 import { ease, easeExit } from '@/lib/animations'
 
@@ -52,12 +53,15 @@ export function FullscreenMenu({ isOpen, onClose }: FullscreenMenuProps) {
 
           {/* Top row */}
           <div className="relative z-10 flex justify-between items-start">
-            <Link
-              href="/"
-              onClick={onClose}
-              className="font-heading text-ivory text-xl tracking-[0.15em] uppercase"
-            >
-              Vilasa Curators
+            <Link href="/" onClick={onClose}>
+              <Image
+                src="/images/Vilasa png.png"
+                alt="Vilasa"
+                width={160}
+                height={40}
+                className="h-10 md:h-12 w-auto"
+                style={{ filter: 'brightness(0) invert(1)' }}
+              />
             </Link>
             <button
               onClick={onClose}

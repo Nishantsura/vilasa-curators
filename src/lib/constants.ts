@@ -2,11 +2,9 @@ import type { ProcessStep, NavItem } from '@/types'
 
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Destinations', href: '/destinations' },
-  { label: 'Collections', href: '/collections' },
-  { label: 'Process', href: '/process' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Collections', href: '/#collections' },
+  { label: 'Destinations', href: '/#destinations' },
+  { label: 'About Us', href: '/about' },
 ]
 
 export const PROCESS_STEPS: ProcessStep[] = [

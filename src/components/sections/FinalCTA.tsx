@@ -2,9 +2,9 @@
 
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import Image from 'next/image'
 import { staggerContainer, fadeUp, ease } from '@/lib/animations'
 import { SectionLabel } from '@/components/ui/SectionLabel'
-import { CTALink } from '@/components/ui/CTALink'
 import type { HomePage, SiteSettings } from '@/types'
 
 interface FinalCTAProps {
@@ -19,9 +19,9 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
   return (
     <section
       ref={ref}
-      className="relative bg-ivory min-h-screen flex items-center py-32 md:py-48 px-8 md:px-16 overflow-hidden"
+      className="relative bg-ivory flex items-center py-16 xs:py-20 md:py-24 lg:py-28 section-px overflow-hidden"
     >
-      <div className="max-w-[1400px] mx-auto w-full grid md:grid-cols-[3fr_2fr] gap-16 md:gap-32 items-end">
+      <div className="content-max w-full grid md:grid-cols-[3fr_2fr] gap-12 md:gap-20 lg:gap-32 items-end">
 
         {/* Left: Statement */}
         <motion.div
@@ -31,7 +31,7 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
         >
           <motion.h2
             variants={fadeUp}
-            className="font-heading text-espresso text-5xl md:text-7xl lg:text-8xl font-light leading-[0.9] mb-12"
+            className="font-heading text-espresso text-3xl md:text-5xl lg:text-7xl font-light leading-[0.9] mb-8"
           >
             {homePage?.finalCtaHeading || 'More than objects.'}
             <br />
@@ -42,18 +42,24 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
 
           <motion.p
             variants={fadeUp}
-            className="text-charcoal/60 text-base md:text-lg font-light leading-relaxed max-w-md mb-12"
+            className="text-charcoal/60 text-sm md:text-base font-light leading-relaxed max-w-md mb-8"
           >
             {homePage?.finalCtaBody || "If you have a space that requires the world's most considered objects, we would like to hear from you."}
           </motion.p>
 
-          <motion.div variants={fadeUp} className="flex flex-wrap gap-8">
-            <CTALink href="/contact">
+          <motion.div variants={fadeUp} className="flex flex-col xs:flex-row flex-wrap gap-4">
+            <a href="/about" className="btn-primary-light">
               Begin a Conversation
-            </CTALink>
-            <CTALink href="/collections" className="text-charcoal/50">
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+                <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+            <a href="/#collections" className="btn-ghost-light">
               Explore Collections
-            </CTALink>
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+                <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
           </motion.div>
         </motion.div>
 
@@ -65,24 +71,21 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
           className="space-y-8"
         >
           <div>
-            <SectionLabel className="block mb-3">Vilasa Curators</SectionLabel>
-            <p className="font-heading text-espresso text-lg font-light">
-              Global Luxury Sourcing
-            </p>
+            <Image
+              src="/images/Vilasa png.png"
+              alt="Vilasa — Luxurious Living"
+              width={160}
+              height={40}
+              className="h-[144px] md:h-[192px] w-auto mb-6"
+            />
           </div>
 
-          <div className="space-y-2">
+          <div className="flex flex-col gap-3">
             <a
               href={`mailto:${siteSettings?.email || 'hello@vilasacurators.com'}`}
-              className="cta-underline text-charcoal/70 text-sm font-light block hover:text-espresso transition-colors duration-300"
+              className="cta-underline text-charcoal/70 text-sm font-light hover:text-espresso transition-colors duration-300"
             >
               {siteSettings?.email || 'hello@vilasacurators.com'}
-            </a>
-            <a
-              href={`https://wa.me/${siteSettings?.whatsappNumber || '919999999999'}`}
-              className="cta-underline text-charcoal/70 text-sm font-light block hover:text-espresso transition-colors duration-300"
-            >
-              WhatsApp Enquiry
             </a>
           </div>
 
@@ -95,10 +98,10 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
         </motion.div>
       </div>
 
-      {/* Background decorative element */}
+      {/* Subtle decorative element */}
       <motion.div
-        className="absolute bottom-0 right-0 font-heading text-beige/20 text-[200px] md:text-[300px] font-light leading-none select-none pointer-events-none"
-        initial={{ opacity: 0, x: 60 }}
+        className="absolute bottom-0 right-0 font-heading text-beige/10 text-[120px] md:text-[180px] font-light leading-none select-none pointer-events-none"
+        initial={{ opacity: 0, x: 40 }}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 1.4, delay: 0.3, ease }}
       >

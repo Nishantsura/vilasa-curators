@@ -16,9 +16,9 @@ export function CollectionDetail({ collection, siteSettings }: { collection: Col
   return (
     <div className="bg-ivory min-h-screen">
       {/* Header */}
-      <section className="px-8 md:px-16 pt-40 pb-20 max-w-[1400px] mx-auto">
+      <section className="section-px pt-40 pb-20 content-max">
         <Link
-          href="/collections"
+          href="/#collections"
           className="inline-flex items-center gap-2 text-charcoal/40 hover:text-charcoal/70 transition-colors duration-300 section-label tracking-[0.2em] mb-10 block"
         >
           <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
@@ -40,7 +40,7 @@ export function CollectionDetail({ collection, siteSettings }: { collection: Col
       </section>
 
       {/* Description + first image */}
-      <section className="px-8 md:px-16 pb-28 max-w-[1400px] mx-auto grid md:grid-cols-[1fr_1fr] gap-16 md:gap-28 items-center">
+      <section className="section-px pb-28 content-max grid md:grid-cols-[1fr_1fr] gap-12 md:gap-20 lg:gap-28 items-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -50,7 +50,7 @@ export function CollectionDetail({ collection, siteSettings }: { collection: Col
           <p className="font-heading text-espresso text-2xl md:text-3xl font-light leading-[1.3] mb-8">
             {collection.description}
           </p>
-          <Link href="/contact" className="btn-dark">
+          <Link href="/about" className="btn-primary-light">
             Enquire About This Collection
             <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
               <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -81,7 +81,7 @@ export function CollectionDetail({ collection, siteSettings }: { collection: Col
 
       {/* Additional images */}
       {additionalImages.length > 0 && (
-        <section className="px-8 md:px-16 pb-32 max-w-[1400px] mx-auto">
+        <section className="section-px pb-32 content-max">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {additionalImages.map((img, i) => (
               img?.asset && (
@@ -110,7 +110,7 @@ export function CollectionDetail({ collection, siteSettings }: { collection: Col
       )}
 
       {/* CTA */}
-      <section className="bg-bone py-24 px-8 md:px-16">
+      <section className="bg-bone py-24 section-px">
         <motion.div
           className="max-w-[600px] mx-auto text-center"
           initial={{ opacity: 0, y: 30 }}
@@ -121,7 +121,7 @@ export function CollectionDetail({ collection, siteSettings }: { collection: Col
           <p className="font-heading text-espresso text-2xl md:text-3xl font-light italic leading-[1.3] mb-8">
             &ldquo;{siteSettings?.tagline ?? 'More than objects. We compose atmospheres.'}&rdquo;
           </p>
-          <Link href="/contact" className="btn-dark">
+          <Link href="/about" className="btn-primary-light">
             Begin a Conversation
             <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
               <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

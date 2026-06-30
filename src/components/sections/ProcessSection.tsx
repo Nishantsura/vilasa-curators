@@ -13,9 +13,9 @@ export function ProcessSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-bone py-24 md:py-32"
+      className="relative bg-bone py-20 xs:py-24 md:py-32 lg:py-40"
     >
-      <div className="max-w-[1400px] mx-auto px-8 md:px-16 grid md:grid-cols-[1fr_1.4fr] gap-12 md:gap-20 items-start">
+      <div className="content-max section-px grid md:grid-cols-[1fr_1.4fr] gap-10 md:gap-16 lg:gap-20 items-start">
 
         {/* Left: header (sticky on desktop) */}
         <motion.div
@@ -25,7 +25,7 @@ export function ProcessSection() {
           transition={{ duration: 0.8, ease }}
         >
           <SectionLabel className="mb-6 block">Process</SectionLabel>
-          <h2 className="font-heading text-espresso text-4xl md:text-5xl lg:text-6xl font-light leading-[0.95]">
+          <h2 className="font-heading text-espresso text-3xl md:text-5xl lg:text-6xl font-light leading-[0.95]">
             How a room
             <br />
             <em className="text-bronze">comes to itself.</em>

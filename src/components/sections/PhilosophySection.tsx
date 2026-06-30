@@ -1,10 +1,11 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ease } from '@/lib/animations'
+import { toSentenceCase } from '@/lib/utils'
 import { sanityImageUrl } from '../../../sanity/lib/image'
 import type { HomePage, PhilosophyCard } from '@/types'
 
@@ -15,23 +16,40 @@ const CARD_LAYOUT = [
 ]
 
 const DEFAULT_CARDS: PhilosophyCard[] = [
-  { heading: 'THE SOURCING\nVOYAGE.', sub: '' },
-  { heading: 'THE ARTISAN\nALLIANCE.', sub: '' },
-  { heading: 'CRAFTED IN\nSINGULARITY.', sub: 'Access to private reserves and singular creations that no international buying guide has ever documented.' },
+  { heading: 'The Sourcing\nVoyage.', sub: '' },
+  { heading: 'The Artisan\nAlliance.', sub: '' },
+  { heading: 'Crafted in\nSingularity.', sub: 'Access to private reserves and singular creations that no international buying guide has ever documented.' },
 ]
 
 export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) {
   const outerRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
   const isInView = useInView(outerRef, { once: true, margin: '-5%' })
+  const [topIndex, setTopIndex] = useState<number | null>(null)
 
   const cards = homePage?.philosophyCards?.length ? homePage.philosophyCards : DEFAULT_CARDS
+
+  const handleCardNext = useCallback(() => {
+    setTopIndex(prev => {
+      const current = prev ?? cards.length - 1
+      return current <= 0 ? cards.length - 1 : current - 1
+    })
+  }, [cards.length])
+
+  const handleCardPrev = useCallback(() => {
+    setTopIndex(prev => {
+      const current = prev ?? cards.length - 1
+      return (current + 1) % cards.length
+    })
+  }, [cards.length])
 
   useEffect(() => {
     let cancelled = false
     let ctx: { revert: () => void } | undefined
 
     const init = async () => {
+      if (window.innerWidth < 768) return
+
       const { gsap } = await import('gsap')
       const { ScrollTrigger } = await import('gsap/ScrollTrigger')
       gsap.registerPlugin(ScrollTrigger)
@@ -53,15 +71,13 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
           },
         })
 
-        const offsetScale = window.innerWidth < 768 ? 0.45 : 1
-
         cardEls.forEach((_, i) => {
           const layout = CARD_LAYOUT[i % CARD_LAYOUT.length]
           tl.to(
             cardEls[i],
             {
               y: layout.y,
-              x: layout.x * offsetScale,
+              x: layout.x,
               rotation: layout.rotate,
               opacity: 1,
               duration: 0.55,
@@ -83,32 +99,14 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
   }, [cards.length])
 
   return (
-    /*
-     * Outer wrapper height = 100vh + 1000px
-     * Math: sticky holds for exactly (outerHeight - 100vh) = 1000px of scroll,
-     * then exits at the same rate Destinations enters — zero gap, no DOM mutation.
-     */
-    <div
-      ref={outerRef}
-      style={{ height: 'calc(100vh + 1000px)', backgroundColor: '#e8e2d8' }}
-    >
-      {/* CSS sticky panel — locks to viewport during the 1000px scroll sequence */}
-      <div
-        className="overflow-hidden"
-        style={{
-          position: 'sticky',
-          top: 0,
-          height: '100vh',
-          backgroundColor: '#e8e2d8',
-        }}
-      >
-        <div className="max-w-[1400px] mx-auto px-8 md:px-14 grid md:grid-cols-[1fr_1fr] gap-12 md:gap-0 items-center h-full">
+    <div ref={outerRef} className="philosophy-outer">
+      <div className="philosophy-sticky md:overflow-hidden">
+        <div className="content-max section-px flex flex-col md:grid md:grid-cols-[1fr_1fr] md:items-center h-full py-20 xs:py-24 md:py-0">
 
-          {/* ── LEFT: Text ── */}
+          {/* ── Text ── */}
           <div className="flex flex-col justify-center">
-
             <motion.span
-              className="section-label block mb-8 text-bronze"
+              className="section-label block mb-6 md:mb-8 text-bronze"
               initial={{ opacity: 0, y: 12 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, ease }}
@@ -117,24 +115,24 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
             </motion.span>
 
             <motion.h2
-              className="font-heading text-espresso leading-[0.95] mb-6"
-              style={{ fontSize: 'clamp(48px, 6vw, 88px)' }}
+              className="font-heading text-espresso leading-[0.95] mb-4 md:mb-6"
+              style={{ fontSize: 'clamp(32px, 5.5vw, 78px)' }}
               initial={{ opacity: 0, y: 24 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.85, delay: 0.1, ease }}
             >
-              {homePage?.philosophyHeading || 'SOURCING THE WORLD.'}
+              {toSentenceCase(homePage?.philosophyHeading || 'Sourcing the world.')}
               <br />
               <em
                 className="font-heading"
                 style={{ fontStyle: 'italic', fontWeight: 300, color: 'rgba(26,23,19,0.65)' }}
               >
-                {homePage?.philosophyHeadingItalic || 'IT STARTS HERE.'}
+                {toSentenceCase(homePage?.philosophyHeadingItalic || 'It starts here.')}
               </em>
             </motion.h2>
 
             <motion.p
-              className="font-body text-espresso/60 font-light leading-relaxed mb-10"
+              className="font-body text-espresso/60 font-light leading-relaxed mb-8 md:mb-10"
               style={{ fontSize: 'clamp(14px, 1.1vw, 17px)', maxWidth: 420 }}
               initial={{ opacity: 0, y: 18 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -148,8 +146,8 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.35, ease }}
             >
-              <Link href="/process" className="btn-dark">
-                HOW WE SOURCE
+              <Link href="/about" className="btn-primary-light">
+                How We Source
                 <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
                   <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -157,32 +155,56 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
             </motion.div>
           </div>
 
-          {/* ── RIGHT: Cards ── */}
-          <div className="relative flex items-center justify-center" style={{ height: '100%' }}>
+          {/* ── Cards ── */}
+          <div className="relative flex items-center justify-center mt-10 md:mt-0" style={{ minHeight: 'clamp(240px, 55vw, 420px)' }}>
+            {/* Mobile prev/next buttons */}
+            <button
+              onClick={handleCardPrev}
+              aria-label="Previous card"
+              className="md:hidden absolute left-0 z-20 w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300"
+              style={{ backgroundColor: 'rgba(26,23,19,0.08)', border: '1px solid rgba(26,23,19,0.12)' }}
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M9 3L5 7l4 4" stroke="#1a1713" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <button
+              onClick={handleCardNext}
+              aria-label="Next card"
+              className="md:hidden absolute right-0 z-20 w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300"
+              style={{ backgroundColor: 'rgba(26,23,19,0.08)', border: '1px solid rgba(26,23,19,0.12)' }}
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M5 3l4 4-4 4" stroke="#1a1713" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
             <div
               className="relative"
               style={{
-                width: 'clamp(230px, 62vw, 360px)',
-                height: 'clamp(250px, 66vw, 400px)',
+                width: 'clamp(180px, 48vw, 360px)',
+                height: 'clamp(200px, 52vw, 400px)',
               }}
             >
               {cards.map((card, i) => {
                 const layout = CARD_LAYOUT[i % CARD_LAYOUT.length]
                 const imgSrc = card.image?.asset ? sanityImageUrl(card.image, 600) : null
+                const zOverride = topIndex !== null ? (i === topIndex ? 10 : i) : layout.zIndex
                 return (
                   <div
                     key={card.heading + i}
                     ref={(el) => { cardRefs.current[i] = el }}
-                    className="absolute"
-                    style={{ zIndex: layout.zIndex, transformOrigin: 'center center', willChange: 'transform' }}
+                    className="absolute cursor-pointer"
+                    onClick={handleCardNext}
+                    style={{ zIndex: zOverride, transformOrigin: 'center center', willChange: 'transform', transition: 'z-index 0s' }}
                   >
                     <div
                       className="relative flex flex-col justify-between overflow-hidden"
                       style={{
-                        width: 'clamp(230px, 62vw, 360px)',
-                        height: 'clamp(250px, 66vw, 400px)',
+                        width: 'clamp(200px, 55vw, 360px)',
+                        height: 'clamp(220px, 58vw, 400px)',
                         backgroundColor: '#f5f0eb',
                         border: '1px solid rgba(26,23,19,0.1)',
+                        borderRadius: 12,
                         padding: 'clamp(22px, 2.5vw, 36px)',
                         boxShadow: '0 8px 40px rgba(26,23,19,0.12)',
                       }}
@@ -205,7 +227,7 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
                         className={`relative z-10 font-heading font-light leading-[1.0] whitespace-pre-line ${imgSrc ? 'text-ivory' : 'text-espresso'}`}
                         style={{ fontSize: 'clamp(26px, 3.2vw, 52px)' }}
                       >
-                        {card.heading}
+                        {toSentenceCase(card.heading)}
                       </h3>
                       {card.sub && (
                         <p

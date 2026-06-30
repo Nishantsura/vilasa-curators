@@ -14,7 +14,7 @@ export function DestinationDetail({ destination }: { destination: Destination })
       {/* Hero */}
       <section className="relative min-h-screen flex items-end bg-espresso overflow-hidden">
         <Link
-          href="/destinations"
+          href="/#destinations"
           className="absolute top-24 left-8 md:left-16 z-20 flex items-center gap-2 text-ivory/60 hover:text-ivory transition-colors duration-300 section-label tracking-[0.2em]"
         >
           <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
@@ -41,7 +41,7 @@ export function DestinationDetail({ destination }: { destination: Destination })
         </div>
 
         <motion.div
-          className="relative z-10 px-8 md:px-16 pb-24 max-w-[1400px] mx-auto w-full"
+          className="relative z-10 section-px pb-24 content-max w-full"
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
@@ -59,7 +59,7 @@ export function DestinationDetail({ destination }: { destination: Destination })
       </section>
 
       {/* Story */}
-      <section className="px-8 md:px-16 py-28 max-w-[1400px] mx-auto grid md:grid-cols-[2fr_1fr] gap-16 md:gap-32">
+      <section className="section-px py-28 content-max grid md:grid-cols-[2fr_1fr] gap-12 md:gap-20 lg:gap-32">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

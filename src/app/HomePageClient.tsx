@@ -53,13 +53,17 @@ export function HomePageClient({
         <>
           <HeroSection homePage={homePage} siteSettings={siteSettings} />
           <PhilosophySection homePage={homePage} />
-          <DestinationsSection destinations={destinations} />
-          <CollectionsSection
-            collections={collections}
-            heading={homePage?.collectionsHeading}
-            headingItalic={homePage?.collectionsHeadingItalic}
-            subtext={homePage?.collectionsSubtext}
-          />
+          <div id="destinations">
+            <DestinationsSection destinations={destinations} />
+          </div>
+          <div id="collections">
+            <CollectionsSection
+              collections={collections}
+              heading={homePage?.collectionsHeading}
+              headingItalic={homePage?.collectionsHeadingItalic}
+              subtext={homePage?.collectionsSubtext}
+            />
+          </div>
           <ProcessSection />
           <FinalCTA homePage={homePage} siteSettings={siteSettings} />
         </>

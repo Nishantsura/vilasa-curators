@@ -20,7 +20,7 @@ export function CollectionsListPage({
   return (
     <div className="bg-ivory min-h-screen">
       {/* Header */}
-      <section className="px-8 md:px-16 pt-40 pb-20 max-w-[1400px] mx-auto">
+      <section className="section-px pt-40 pb-20 content-max">
         <motion.div variants={staggerContainer} initial="hidden" animate="visible">
           <motion.div variants={fadeUp}>
             <SectionLabel className="block mb-8">Collections</SectionLabel>
@@ -37,8 +37,8 @@ export function CollectionsListPage({
       </section>
 
       {/* Collection grid */}
-      <section className="px-8 md:px-16 pb-32">
-        <div className="max-w-[1400px] mx-auto space-y-2">
+      <section className="section-px pb-32">
+        <div className="content-max space-y-2">
           {collections.map((collection, index) => (
             <motion.div
               key={collection.slug}
