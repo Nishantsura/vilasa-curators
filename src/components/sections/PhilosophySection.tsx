@@ -44,6 +44,12 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
   }, [cards.length])
 
   useEffect(() => {
+    if (typeof window === 'undefined' || window.innerWidth >= 768) return
+    const interval = setInterval(handleCardNext, 3000)
+    return () => clearInterval(interval)
+  }, [handleCardNext])
+
+  useEffect(() => {
     let cancelled = false
     let ctx: { revert: () => void } | undefined
 
@@ -146,7 +152,11 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.35, ease }}
             >
-              <Link href="/about" className="btn-primary-light">
+              <Link
+                href="/about"
+                className="inline-flex items-center gap-2.5 text-[11px] tracking-[0.18em] uppercase font-body font-medium whitespace-nowrap transition-all duration-300 hover:opacity-80"
+                style={{ backgroundColor: 'rgba(26,23,19,0.08)', border: '1px solid rgba(26,23,19,0.2)', color: '#1a1713', borderRadius: '9999px', padding: '14px 32px' }}
+              >
                 How We Source
                 <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
                   <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -157,27 +167,6 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
 
           {/* ── Cards ── */}
           <div className="relative flex items-center justify-center mt-10 md:mt-0" style={{ minHeight: 'clamp(240px, 55vw, 420px)' }}>
-            {/* Mobile prev/next buttons */}
-            <button
-              onClick={handleCardPrev}
-              aria-label="Previous card"
-              className="md:hidden absolute left-0 z-20 w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300"
-              style={{ backgroundColor: 'rgba(26,23,19,0.08)', border: '1px solid rgba(26,23,19,0.12)' }}
-            >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M9 3L5 7l4 4" stroke="#1a1713" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <button
-              onClick={handleCardNext}
-              aria-label="Next card"
-              className="md:hidden absolute right-0 z-20 w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300"
-              style={{ backgroundColor: 'rgba(26,23,19,0.08)', border: '1px solid rgba(26,23,19,0.12)' }}
-            >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M5 3l4 4-4 4" stroke="#1a1713" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
             <div
               className="relative"
               style={{

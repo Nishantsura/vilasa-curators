@@ -63,9 +63,9 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
             <Image
               src="/images/Vilasa png.png"
               alt="Vilasa — Luxurious Living"
-              width={280}
-              height={70}
-              className="h-16 sm:h-20 md:h-28 w-auto mx-auto"
+              width={1200}
+              height={300}
+              className="w-[80vw] sm:w-[70vw] md:w-[55vw] max-w-[900px] h-auto mx-auto"
               style={{
                 filter: 'brightness(0) invert(1) drop-shadow(0 2px 32px rgba(16,13,10,0.95))',
               }}

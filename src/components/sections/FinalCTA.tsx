@@ -19,7 +19,7 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
   return (
     <section
       ref={ref}
-      className="relative bg-ivory flex items-center py-16 xs:py-20 md:py-24 lg:py-28 section-px overflow-hidden"
+      className="relative bg-ivory flex items-center py-12 xs:py-14 md:py-16 lg:py-20 section-px overflow-hidden"
     >
       <div className="content-max w-full grid md:grid-cols-[3fr_2fr] gap-12 md:gap-20 lg:gap-32 items-end">
 
@@ -31,7 +31,7 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
         >
           <motion.h2
             variants={fadeUp}
-            className="font-heading text-espresso text-3xl md:text-5xl lg:text-7xl font-light leading-[0.9] mb-8"
+            className="font-heading text-espresso text-3xl md:text-5xl lg:text-6xl font-light leading-[0.9] mb-6"
           >
             {homePage?.finalCtaHeading || 'More than objects.'}
             <br />
@@ -42,13 +42,17 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
 
           <motion.p
             variants={fadeUp}
-            className="text-charcoal/60 text-sm md:text-base font-light leading-relaxed max-w-md mb-8"
+            className="text-charcoal/60 text-sm md:text-base font-light leading-relaxed max-w-md mb-6"
           >
             {homePage?.finalCtaBody || "If you have a space that requires the world's most considered objects, we would like to hear from you."}
           </motion.p>
 
           <motion.div variants={fadeUp} className="flex flex-col xs:flex-row flex-wrap gap-4">
-            <a href="/about" className="btn-primary-light">
+            <a
+              href="/about"
+              className="inline-flex items-center gap-2.5 text-[11px] tracking-[0.18em] uppercase font-body font-medium whitespace-nowrap transition-all duration-300 hover:opacity-80"
+              style={{ backgroundColor: 'rgba(26,23,19,0.08)', border: '1px solid rgba(26,23,19,0.2)', color: '#1a1713', borderRadius: '9999px', padding: '14px 32px' }}
+            >
               Begin a Conversation
               <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
                 <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -76,7 +80,7 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
               alt="Vilasa — Luxurious Living"
               width={160}
               height={40}
-              className="h-[144px] md:h-[192px] w-auto mb-6"
+              className="h-[120px] md:h-[160px] w-auto mb-4"
             />
           </div>
 
@@ -100,7 +104,7 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
 
       {/* Subtle decorative element */}
       <motion.div
-        className="absolute bottom-0 right-0 font-heading text-beige/10 text-[120px] md:text-[180px] font-light leading-none select-none pointer-events-none"
+        className="absolute bottom-0 right-0 font-heading text-beige/10 text-[80px] md:text-[120px] font-light leading-none select-none pointer-events-none"
         initial={{ opacity: 0, x: 40 }}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 1.4, delay: 0.3, ease }}

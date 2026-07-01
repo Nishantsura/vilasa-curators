@@ -107,7 +107,11 @@ function MobileCollections({ collections }: { collections: Collection[] }) {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease }}
         >
-          <button onClick={() => setShowAll(true)} className="btn-primary-light">
+          <button
+            onClick={() => setShowAll(true)}
+            className="inline-flex items-center gap-2.5 text-[11px] tracking-[0.18em] uppercase font-body font-medium whitespace-nowrap transition-all duration-300 hover:opacity-80"
+            style={{ backgroundColor: 'rgba(26,23,19,0.08)', border: '1px solid rgba(26,23,19,0.2)', color: '#1a1713', borderRadius: '9999px', padding: '14px 32px' }}
+          >
             View All Collections
             <svg width="13" height="9" viewBox="0 0 14 10" fill="none">
               <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
