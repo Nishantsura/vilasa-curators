@@ -2,7 +2,6 @@
 
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { motion, useInView } from 'framer-motion'
-import Link from 'next/link'
 import Image from 'next/image'
 import { ease } from '@/lib/animations'
 import { toSentenceCase } from '@/lib/utils'
@@ -152,8 +151,12 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.35, ease }}
             >
-              <Link
-                href="/about"
+              <a
+                href="#process"
+                onClick={(e) => {
+                  e.preventDefault()
+                  document.getElementById('process')?.scrollIntoView({ behavior: 'smooth' })
+                }}
                 className="inline-flex items-center gap-2.5 text-[11px] tracking-[0.18em] uppercase font-body font-medium whitespace-nowrap transition-all duration-300 hover:opacity-80"
                 style={{ backgroundColor: 'rgba(26,23,19,0.08)', border: '1px solid rgba(26,23,19,0.2)', color: '#1a1713', borderRadius: '9999px', padding: '14px 32px' }}
               >
@@ -161,7 +164,7 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
                 <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
                   <path d="M9 1l4 4-4 4M13 5H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-              </Link>
+              </a>
             </motion.div>
           </div>
 

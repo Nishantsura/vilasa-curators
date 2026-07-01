@@ -84,10 +84,23 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
           </div>
 
           {/* Founder signature line */}
-          <div className="pt-8 border-t border-beige/60">
+          <div className="pt-8 border-t border-beige/60 flex items-center justify-between">
             <p className="font-heading italic text-taupe text-xl font-light">
               {siteSettings?.tagline ?? 'Vilasa Curators'}
             </p>
+            <a
+              href="https://www.instagram.com/vilasa.luxuriousliving/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-charcoal/50 hover:text-espresso transition-colors duration-300"
+              aria-label="Follow Vilasa on Instagram"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <circle cx="12" cy="12" r="5" />
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+              </svg>
+            </a>
           </div>
         </motion.div>
       </div>

@@ -12,6 +12,7 @@ export function ProcessSection() {
 
   return (
     <section
+      id="process"
       ref={sectionRef}
       className="relative bg-bone py-20 xs:py-24 md:py-32 lg:py-40"
     >

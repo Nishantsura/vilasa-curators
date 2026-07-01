@@ -63,9 +63,9 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
             <Image
               src="/images/Vilasa png.png"
               alt="Vilasa — Luxurious Living"
-              width={1200}
-              height={300}
-              className="w-[80vw] sm:w-[70vw] md:w-[55vw] max-w-[900px] h-auto mx-auto"
+              width={900}
+              height={340}
+              className="w-[65vw] sm:w-[55vw] md:w-[38vw] max-w-[560px] h-auto mx-auto"
               style={{
                 filter: 'brightness(0) invert(1) drop-shadow(0 2px 32px rgba(16,13,10,0.95))',
               }}
@@ -96,7 +96,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           <AnimatePresence>
             {phase === 'enter' && (
               <motion.div
-                className="mt-14 flex flex-col items-center gap-7 relative z-10"
+                className="mt-8 sm:mt-10 md:mt-12 flex flex-col items-center gap-5 sm:gap-6 relative z-10"
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease }}

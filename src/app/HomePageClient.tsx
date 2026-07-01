@@ -8,6 +8,7 @@ import { DestinationsSection } from '@/components/sections/DestinationsSection'
 import { CollectionsSection } from '@/components/sections/CollectionsSection'
 import { ProcessSection } from '@/components/sections/ProcessSection'
 import { FinalCTA } from '@/components/sections/FinalCTA'
+import { InstagramSection } from '@/components/sections/InstagramSection'
 import type { Collection, Destination, HomePage, SiteSettings } from '@/types'
 
 interface HomePageClientProps {
@@ -52,6 +53,7 @@ export function HomePageClient({
       {loaded && (
         <>
           <HeroSection homePage={homePage} siteSettings={siteSettings} />
+          <InstagramSection />
           <PhilosophySection homePage={homePage} />
           <div id="destinations">
             <DestinationsSection destinations={destinations} />

@@ -1,12 +1,117 @@
 'use client'
 
+import { useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { DestinationsSection } from '@/components/sections/DestinationsSection'
 import { CollectionsSection } from '@/components/sections/CollectionsSection'
-import { staggerContainer, fadeUp, imageReveal, ease } from '@/lib/animations'
+import { staggerContainer, fadeUp, ease } from '@/lib/animations'
 import type { Collection, Destination, HomePage, SiteSettings } from '@/types'
+
+const GALLERY_IMAGES = [
+  '/images/about us 1.png',
+  '/images/about us 2.png',
+  '/images/about us 3.png',
+  '/images/about us 04.png',
+  '/images/about us 05.png',
+  '/images/about us 06.png',
+  '/images/about us 07.png',
+  '/images/about us 08.png',
+  '/images/about us 10.png',
+  '/images/about us 11.png',
+  '/images/about us 12.png',
+]
+
+function GalleryStrip() {
+  const trackRef = useRef<HTMLDivElement>(null)
+  const speedRef = useRef(0.5)
+  const posRef = useRef(0)
+  const rafRef = useRef<number>(0)
+  const isDragging = useRef(false)
+  const dragStart = useRef(0)
+  const scrollStart = useRef(0)
+
+  const animate = useCallback(() => {
+    const track = trackRef.current
+    if (!track) return
+    if (!isDragging.current) {
+      posRef.current -= speedRef.current
+      const halfWidth = track.scrollWidth / 2
+      if (Math.abs(posRef.current) >= halfWidth) {
+        posRef.current += halfWidth
+      }
+      track.style.transform = `translateX(${posRef.current}px)`
+    }
+    rafRef.current = requestAnimationFrame(animate)
+  }, [])
+
+  useEffect(() => {
+    rafRef.current = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [animate])
+
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    isDragging.current = true
+    dragStart.current = e.clientX
+    scrollStart.current = posRef.current
+    ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
+  }, [])
+
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (!isDragging.current) return
+    const delta = e.clientX - dragStart.current
+    posRef.current = scrollStart.current + delta
+    const track = trackRef.current
+    if (track) {
+      const halfWidth = track.scrollWidth / 2
+      if (Math.abs(posRef.current) >= halfWidth) {
+        posRef.current += halfWidth * Math.sign(posRef.current)
+      }
+      track.style.transform = `translateX(${posRef.current}px)`
+    }
+  }, [])
+
+  const handlePointerUp = useCallback(() => {
+    isDragging.current = false
+  }, [])
+
+  const handleMouseEnter = useCallback(() => { speedRef.current = 0.2 }, [])
+  const handleMouseLeave = useCallback(() => { speedRef.current = 0.5 }, [])
+
+  const images = [...GALLERY_IMAGES, ...GALLERY_IMAGES]
+
+  return (
+    <section
+      className="py-8 md:py-12 overflow-hidden cursor-grab active:cursor-grabbing select-none"
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div ref={trackRef} className="flex gap-4 md:gap-6" style={{ width: 'max-content', willChange: 'transform' }}>
+        {images.map((src, i) => (
+          <div
+            key={`${src}-${i}`}
+            className="relative flex-shrink-0 overflow-hidden group"
+            style={{ width: 'clamp(200px, 30vw, 360px)', aspectRatio: '4 / 5', borderRadius: 8 }}
+          >
+            <Image
+              src={src}
+              alt={`Vilasa sourcing ${(i % GALLERY_IMAGES.length) + 1}`}
+              fill
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+              sizes="30vw"
+              draggable={false}
+            />
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
 
 interface AboutPageClientProps {
   collections: Collection[]
@@ -23,69 +128,30 @@ export function AboutPageClient({
 }: AboutPageClientProps) {
   return (
     <div className="bg-ivory">
-      {/* ── Hero ── */}
-      <section className="relative min-h-[60vh] flex items-end bg-espresso overflow-hidden pt-24">
-        <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80&auto=format"
-            alt="Luxury interior space"
-            fill
-            className="object-cover opacity-60"
-            priority
-            unoptimized
-          />
-          <div
-            className="absolute inset-0"
-            style={{ background: 'linear-gradient(to top, rgba(26,23,19,0.85) 0%, rgba(26,23,19,0.2) 55%, transparent 100%)' }}
-          />
-        </div>
-
-        <motion.div
-          className="relative z-10 section-px pb-16 md:pb-20 content-max w-full"
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.div variants={fadeUp}>
-            <SectionLabel className="text-taupe block mb-6">About</SectionLabel>
-          </motion.div>
-          <motion.h1
-            variants={fadeUp}
-            className="font-heading text-ivory text-4xl md:text-6xl lg:text-7xl font-light leading-[0.95]"
-          >
-            A map of the world&apos;s
-            <br />
-            <em className="text-bronze">most considered objects.</em>
-          </motion.h1>
-        </motion.div>
-      </section>
-
       {/* ── Our Story ── */}
-      <section className="section-px py-20 md:py-28 content-max">
+      <section className="section-px pt-32 md:pt-40 pb-20 md:pb-28 content-max">
         <div className="grid md:grid-cols-[1fr_1fr] gap-10 md:gap-16 lg:gap-24">
           <motion.div
-            variants={imageReveal}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-10%' }}
+            initial={{ clipPath: 'inset(100% 0% 0% 0%)' }}
+            animate={{ clipPath: 'inset(0% 0% 0% 0%)' }}
+            transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="relative aspect-[3/4] overflow-hidden"
             style={{ borderRadius: 12 }}
           >
             <Image
-              src="https://cdn.sanity.io/images/hl24yywq/production/dda4c48cef624c87465856db7ec0eeda900a47a2-3000x4000.jpg?w=1200&q=80&auto=format"
+              src="/images/about us 09.png"
               alt="Founder of Vilasa Curators"
               fill
+              priority
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
-              unoptimized
             />
           </motion.div>
 
           <motion.div
             variants={staggerContainer}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-10%' }}
+            animate="visible"
             className="flex flex-col justify-center"
           >
             <motion.div variants={fadeUp}>
@@ -116,35 +182,7 @@ export function AboutPageClient({
       </section>
 
       {/* ── Image Gallery Strip ── */}
-      <section className="py-8 md:py-12 overflow-hidden">
-        <div className="flex gap-4 md:gap-6" style={{ width: 'max-content' }}>
-          {[
-            'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=80&auto=format',
-            'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=600&q=80&auto=format',
-            'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80&auto=format',
-            'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=600&q=80&auto=format',
-          ].map((src, i) => (
-            <motion.div
-              key={i}
-              className="relative flex-shrink-0 overflow-hidden"
-              style={{ width: 'clamp(200px, 30vw, 360px)', aspectRatio: '4 / 5', borderRadius: 8 }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: i * 0.1, ease }}
-            >
-              <Image
-                src={src}
-                alt={`Vilasa sourcing ${i + 1}`}
-                fill
-                className="object-cover"
-                sizes="30vw"
-                unoptimized
-              />
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      <GalleryStrip />
 
       {/* ── Closing Quote ── */}
       <section className="bg-espresso py-16 md:py-24 section-px">

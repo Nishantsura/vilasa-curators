@@ -159,18 +159,19 @@ export function CollectionsSection({
       // Only animate on desktop
       const mm = gsap.matchMedia()
       mm.add('(min-width: 769px)', () => {
+        if (!outerRef.current) return
         const vh = window.innerHeight
 
-        const col1List = outerRef.current!.querySelector<HTMLElement>('.col-1-list')
-        const col2List = outerRef.current!.querySelector<HTMLElement>('.col-2-list')
-        const col3List = outerRef.current!.querySelector<HTMLElement>('.col-3-list')
+        const col1List = outerRef.current.querySelector<HTMLElement>('.col-1-list')
+        const col2List = outerRef.current.querySelector<HTMLElement>('.col-2-list')
+        const col3List = outerRef.current.querySelector<HTMLElement>('.col-3-list')
         if (!col1List || !col2List || !col3List) return
 
         const listH = col2List.offsetHeight
         const travel = listH - vh  // px each column needs to travel
 
         // Size the outer wrapper so sticky duration = travel distance exactly
-        outerRef.current!.style.height = `${listH}px`
+        outerRef.current.style.height = `${listH}px`
         ScrollTrigger.refresh()
 
         const innerCtx = gsap.context(() => {
