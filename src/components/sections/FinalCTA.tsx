@@ -74,16 +74,6 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
           transition={{ duration: 0.9, delay: 0.5, ease }}
           className="space-y-8"
         >
-          <div>
-            <Image
-              src="/images/Vilasa png.png"
-              alt="Vilasa — Luxurious Living"
-              width={160}
-              height={40}
-              className="h-[120px] md:h-[160px] w-auto mb-4"
-            />
-          </div>
-
           <div className="flex flex-col gap-3">
             <a
               href={`mailto:${siteSettings?.email || 'hello@vilasacurators.com'}`}
@@ -102,15 +92,6 @@ export function FinalCTA({ homePage, siteSettings }: FinalCTAProps) {
         </motion.div>
       </div>
 
-      {/* Subtle decorative element */}
-      <motion.div
-        className="absolute bottom-0 right-0 font-heading text-beige/10 text-[80px] md:text-[120px] font-light leading-none select-none pointer-events-none"
-        initial={{ opacity: 0, x: 40 }}
-        animate={isInView ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 1.4, delay: 0.3, ease }}
-      >
-        V
-      </motion.div>
     </section>
   )
 }

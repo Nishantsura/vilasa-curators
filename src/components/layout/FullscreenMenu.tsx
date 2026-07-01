@@ -55,7 +55,7 @@ export function FullscreenMenu({ isOpen, onClose }: FullscreenMenuProps) {
           <div className="relative z-10 flex justify-between items-start">
             <Link href="/" onClick={onClose}>
               <Image
-                src="/images/Vilasa png.png"
+                src="/images/Vilasa navbar.png"
                 alt="Vilasa"
                 width={800}
                 height={200}

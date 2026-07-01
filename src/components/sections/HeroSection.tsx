@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import Link from 'next/link'
 import { ease } from '@/lib/animations'
 
 import { toSentenceCase } from '@/lib/utils'
@@ -129,7 +130,17 @@ export function HeroSection({ homePage, siteSettings }: HeroSectionProps) {
                 )}
                 {line3 && (
                   <p className="font-body text-ivory/35 tracking-[0.32em] uppercase text-center" style={{ fontSize: 9 }}>
-                    {line3}
+                    {line3.split('·').map((country, i, arr) => (
+                      <span key={country.trim()}>
+                        <Link
+                          href={`/destinations/${country.trim().toLowerCase()}`}
+                          className="hover:text-ivory/70 transition-colors duration-300"
+                        >
+                          {country.trim()}
+                        </Link>
+                        {i < arr.length - 1 && ' · '}
+                      </span>
+                    ))}
                   </p>
                 )}
               </motion.div>

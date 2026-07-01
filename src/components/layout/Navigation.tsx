@@ -54,7 +54,7 @@ export function Navigation() {
           <div className="flex items-center gap-0 h-full min-w-0">
             <Link href="/" className="flex items-center pr-3 sm:pr-5">
               <Image
-                src="/images/Vilasa png.png"
+                src="/images/Vilasa navbar.png"
                 alt="Vilasa"
                 width={120}
                 height={30}
