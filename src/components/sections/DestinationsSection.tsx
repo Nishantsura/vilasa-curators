@@ -13,6 +13,12 @@ export function DestinationsSection({ destinations }: { destinations: Destinatio
   const labelRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(labelRef, { once: true, margin: '-10%' })
 
+  const sorted = [...destinations].sort((a, b) => {
+    if (a.name?.toLowerCase() === 'china') return -1
+    if (b.name?.toLowerCase() === 'china') return 1
+    return 0
+  })
+
   return (
     <section className="relative bg-espresso py-14 xs:py-16 md:py-20 lg:py-24">
       {/* Section header */}
@@ -37,7 +43,7 @@ export function DestinationsSection({ destinations }: { destinations: Destinatio
         }}
       >
         <style>{`.destinations-track::-webkit-scrollbar { display: none; }`}</style>
-        {destinations.map((dest, index) => (
+        {sorted.map((dest, index) => (
           <motion.div
             key={dest.slug}
             className="flex-shrink-0 snap-start group"

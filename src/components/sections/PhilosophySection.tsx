@@ -14,6 +14,8 @@ const CARD_LAYOUT = [
   { rotate: 8, x: 36, y: -22, zIndex: 3 },
 ]
 
+const LOCAL_CARD_IMAGES = ['/images/Phil 1.jpeg', '/images/Phil 2.jpeg', '/images/Phil 3.jpeg']
+
 const DEFAULT_CARDS: PhilosophyCard[] = [
   { heading: 'The Sourcing\nVoyage.', sub: '' },
   { heading: 'The Artisan\nAlliance.', sub: '' },
@@ -179,7 +181,7 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
             >
               {cards.map((card, i) => {
                 const layout = CARD_LAYOUT[i % CARD_LAYOUT.length]
-                const imgSrc = card.image?.asset ? sanityImageUrl(card.image, 600) : null
+                const imgSrc = LOCAL_CARD_IMAGES[i] || (card.image?.asset ? sanityImageUrl(card.image, 600) : null)
                 const zOverride = topIndex !== null ? (i === topIndex ? 10 : i) : layout.zIndex
                 return (
                   <div
@@ -209,8 +211,7 @@ export function PhilosophySection({ homePage }: { homePage?: HomePage | null }) 
                             fill
                             className="object-cover"
                             sizes="360px"
-                            blurDataURL={card.image?.asset?.metadata?.lqip}
-                            placeholder={card.image?.asset?.metadata?.lqip ? 'blur' : undefined}
+                            {...(card.image?.asset?.metadata?.lqip ? { blurDataURL: card.image.asset.metadata.lqip, placeholder: 'blur' as const } : {})}
                           />
                           <div className="absolute inset-0 bg-espresso/50" />
                         </>

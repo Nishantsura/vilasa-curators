@@ -77,7 +77,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           <AnimatePresence>
             {phase !== 'logo' && (
               <motion.p
-                className="relative z-10 mt-4 font-body uppercase font-light tracking-[0.28em] px-4 py-1.5 rounded-sm"
+                className="relative z-10 mt-2 font-body uppercase font-light tracking-[0.28em] px-4 py-1.5 rounded-sm"
                 style={{
                   fontSize: 'clamp(9px, 1.1vw, 11px)',
                   color: 'rgba(245,240,235,0.9)',
@@ -96,7 +96,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           <AnimatePresence>
             {phase === 'enter' && (
               <motion.div
-                className="mt-8 sm:mt-10 md:mt-12 flex flex-col items-center gap-5 sm:gap-6 relative z-10"
+                className="mt-4 sm:mt-5 md:mt-6 flex flex-col items-center gap-4 sm:gap-5 relative z-10"
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease }}

@@ -113,6 +113,10 @@ export function HeroSection({ homePage, siteSettings }: HeroSectionProps) {
           {/* CENTER — featured label (desktop only) */}
           {homePage?.featuredLabel && (() => {
             const [line1, line2, line3] = homePage.featuredLabel.split(' — ')
+            const rawCountries = line3 ? line3.split('·').map(c => c.trim()).filter(Boolean) : []
+            const countries = rawCountries.some(c => c.toLowerCase() === 'china')
+              ? rawCountries
+              : ['China', ...rawCountries]
             return (
               <motion.div
                 className="hidden lg:flex flex-col items-center gap-1 absolute left-1/2 -translate-x-1/2 bottom-10 lg:bottom-14"
@@ -128,17 +132,17 @@ export function HeroSection({ homePage, siteSettings }: HeroSectionProps) {
                     {line2}
                   </p>
                 )}
-                {line3 && (
+                {countries.length > 0 && (
                   <p className="font-body text-ivory/35 tracking-[0.32em] uppercase text-center" style={{ fontSize: 9 }}>
-                    {line3.split('·').map((country, i, arr) => (
-                      <span key={country.trim()}>
+                    {countries.map((country, i) => (
+                      <span key={country}>
                         <Link
-                          href={`/destinations/${country.trim().toLowerCase()}`}
+                          href={`/destinations/${country.toLowerCase()}`}
                           className="hover:text-ivory/70 transition-colors duration-300"
                         >
-                          {country.trim()}
+                          {country}
                         </Link>
-                        {i < arr.length - 1 && ' · '}
+                        {i < countries.length - 1 && ' · '}
                       </span>
                     ))}
                   </p>
